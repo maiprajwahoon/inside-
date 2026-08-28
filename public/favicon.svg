@@ -1,1 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1" height="1"></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="100%" height="100%">
+  <rect width="1000" height="1000" fill="#000000" />
+  <!-- Open Door Panel -->
+  <polygon points="369,329 552,303 552,696 369,670" fill="#FFFFFF" />
+  <!-- Door Knob -->
+  <circle cx="526" cy="513" r="14" fill="#000000" />
+  <!-- Outer Frame -->
+  <path d="M 552,330 L 657,330 L 657,669 L 552,669 L 552,634 L 624,634 L 624,365 L 552,365 Z" fill="#FFFFFF" />
+</svg>
