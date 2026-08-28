@@ -13,7 +13,6 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, onNavigate }) => {
   const ruleCount = userProfile.allergies.length + userProfile.diets.length + userProfile.avoidIngredients.length;
 
   const navItems: { id: ActiveTab; label: string; icon: React.ReactNode }[] = [
-    { id: 'home', label: 'INSIDE', icon: null },
     { id: 'scan', label: 'SCAN', icon: <Camera className="h-3.5 w-3.5" /> },
     { id: 'upload', label: 'UPLOAD', icon: <Upload className="h-3.5 w-3.5" /> },
     { id: 'search', label: 'SEARCH', icon: <Search className="h-3.5 w-3.5" /> },
@@ -22,22 +21,22 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, onNavigate }) => {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-[#030303]/95 backdrop-blur-md">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-8 md:px-12">
-        {/* Brand Name Title ONLY (No Logo Icon) */}
+      {/* Top Header Bar (Desktop & Mobile) */}
+      <div className="mx-auto flex h-14 sm:h-16 max-w-7xl items-center justify-between px-4 sm:px-8 md:px-12">
+        {/* Brand Name Title (Left) */}
         <button
           onClick={() => onNavigate('home')}
           className="flex items-center space-x-2 text-left group shrink-0"
         >
-          <span className="font-display text-xl font-black tracking-widest text-white uppercase group-hover:text-white/80 transition-colors">
+          <span className="font-display text-xl sm:text-2xl font-black tracking-widest text-white uppercase group-hover:text-white/80 transition-colors">
             inside
           </span>
         </button>
 
-        {/* Center Nav Items (Desktop & Tablet) */}
+        {/* Center Desktop Navigation Links */}
         <nav className="hidden md:flex items-center space-x-1">
           {navItems.map((item) => {
             const isActive = activeTab === item.id;
-            if (item.id === 'home') return null;
             return (
               <button
                 key={item.id}
@@ -55,40 +54,37 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, onNavigate }) => {
           })}
         </nav>
 
-        {/* Right Active Profile Button */}
-        <div className="flex items-center space-x-2 sm:space-x-3">
-          {/* Mobile Navigation Quick Bar */}
-          <div className="flex md:hidden items-center space-x-1 overflow-x-auto no-scrollbar py-1">
-            {navItems.map((item) => {
-              if (item.id === 'home') return null;
-              const isActive = activeTab === item.id;
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => onNavigate(item.id)}
-                  className={`flex items-center space-x-1 rounded-full px-2.5 py-1.5 text-[10px] font-extrabold tracking-wider uppercase transition-all ${
-                    isActive ? 'bg-white text-black' : 'text-white/70 bg-white/5'
-                  }`}
-                >
-                  {item.icon}
-                  <span>{item.label}</span>
-                </button>
-              );
-            })}
-          </div>
+        {/* Right Pinned Profile Button (ALWAYS Visible on Mobile & PC) */}
+        <button
+          onClick={() => onNavigate('profile')}
+          className={`flex items-center space-x-1.5 sm:space-x-2 rounded-full border px-3 sm:px-4 py-1.5 sm:py-2 text-xs font-black tracking-wider uppercase transition-all shrink-0 ${
+            activeTab === 'profile'
+              ? 'border-white bg-white text-black font-extrabold'
+              : 'border-white/20 bg-white/10 text-white hover:border-white/40 hover:bg-white/20'
+          }`}
+        >
+          <User className="h-3.5 w-3.5" />
+          <span>PROFILE ({ruleCount})</span>
+        </button>
+      </div>
 
-          <button
-            onClick={() => onNavigate('profile')}
-            className={`flex items-center space-x-1.5 rounded-full border px-3 sm:px-4 py-1.5 sm:py-2 text-[10px] sm:text-xs font-black tracking-wider uppercase transition-all shrink-0 ${
-              activeTab === 'profile'
-                ? 'border-white bg-white text-black font-extrabold'
-                : 'border-white/15 bg-white/5 text-white/80 hover:border-white/40 hover:text-white'
-            }`}
-          >
-            <User className="h-3.5 w-3.5" />
-            <span>({ruleCount})</span>
-          </button>
-        </div>
+      {/* Dedicated Mobile Quick Nav Bar (Only visible on mobile screens < 768px) */}
+      <div className="flex md:hidden border-t border-white/10 bg-[#0A0A0E] px-2 py-1.5 justify-around items-center">
+        {navItems.map((item) => {
+          const isActive = activeTab === item.id;
+          return (
+            <button
+              key={item.id}
+              onClick={() => onNavigate(item.id)}
+              className={`flex items-center space-x-1 rounded-full px-3 py-1 text-[11px] font-extrabold tracking-wider uppercase transition-all ${
+                isActive ? 'bg-white text-black shadow-sm' : 'text-white/70 hover:text-white'
+              }`}
+            >
+              {item.icon}
+              <span>{item.label}</span>
+            </button>
+          );
+        })}
       </div>
     </header>
   );
