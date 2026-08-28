@@ -42,7 +42,7 @@ export const HiddenFoodWorld: React.FC<HiddenFoodWorldProps> = ({ mouseX, mouseY
         const rawProximity = Math.max(0, 1 - dist / revealRadius);
         const proximity = Math.pow(rawProximity, 1.4);
 
-        const opacity = Math.min(1, Math.max(0.45, 0.45 + proximity * 0.55));
+        const opacity = Math.min(1, Math.max(0.35, 0.35 + proximity * 0.65));
         const blur = Math.max(0, (1 - proximity) * 3);
         const scale = card.baseScale * (0.98 + proximity * 0.08);
 
@@ -64,33 +64,37 @@ export const HiddenFoodWorld: React.FC<HiddenFoodWorldProps> = ({ mouseX, mouseY
   }, [mouseX, mouseY]);
 
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 640;
+  const productsToDisplay = isMobile ? MOCK_PRODUCTS.slice(0, 8) : MOCK_PRODUCTS.slice(0, 18);
 
   return (
     <div ref={containerRef} className="relative h-screen w-full overflow-hidden bg-[#030303] pointer-events-none max-w-full">
-      {MOCK_PRODUCTS.slice(0, 18).map((product) => {
-        // Clamp mobile X position between 18% and 82% to prevent screen overflow
+      {productsToDisplay.map((product, idx) => {
+        // Position mobile cards cleanly around edges
         const posX = isMobile
-          ? Math.max(18, Math.min(82, product.position.x))
+          ? 20 + (idx % 2) * 60
           : product.position.x;
-        const cardScale = isMobile ? product.position.scale * 0.65 : product.position.scale;
+        const posY = isMobile
+          ? 18 + Math.floor(idx / 2) * 22
+          : product.position.y;
+        const cardScale = isMobile ? 0.52 : product.position.scale;
 
         return (
           <div
             key={product.id}
             data-scale={cardScale}
-            data-rotation={product.position.rotation}
+            data-rotation={isMobile ? (idx % 2 === 0 ? -4 : 4) : product.position.rotation}
             className="food-card-item absolute select-none pointer-events-none transition-transform duration-75 ease-out will-change-transform"
             style={{
               left: `${posX}%`,
-              top: `${product.position.y}%`,
-              transform: `translate3d(-50%, -50%, 0) rotate(${product.position.rotation}deg) scale(${cardScale})`,
-              zIndex: product.position.depth * 3,
+              top: `${posY}%`,
+              transform: `translate3d(-50%, -50%, 0) rotate(${isMobile ? (idx % 2 === 0 ? -4 : 4) : product.position.rotation}deg) scale(${cardScale})`,
+              zIndex: product.position.depth * 2,
             }}
           >
             <div
               className="food-card-inner relative transition-opacity duration-75 ease-out will-change-[opacity,filter]"
               style={{
-                opacity: 0.45,
+                opacity: 0.35,
                 filter: 'blur(3px)',
               }}
             >
