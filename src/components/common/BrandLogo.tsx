@@ -6,6 +6,7 @@ export interface BrandLogoProps {
   className?: string;
   iconClassName?: string;
   textClassName?: string;
+  interactive?: boolean;
   onClick?: () => void;
 }
 
@@ -15,6 +16,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
   className = '',
   iconClassName = '',
   textClassName = '',
+  interactive = true,
   onClick,
 }) => {
   const sizeMap = {
@@ -42,14 +44,18 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
 
   const currentSize = sizeMap[size];
 
+  const hoverEffect = interactive
+    ? 'transition-transform duration-300 transform group-hover:scale-105 hover:scale-105 active:scale-95 origin-left'
+    : '';
+
   const content = (
-    <div className={`flex items-center ${currentSize.gap} ${className}`}>
+    <div className={`inline-flex items-center ${currentSize.gap} ${hoverEffect} ${className}`}>
       <img
         src="/logo.svg"
         alt="inside logo"
-        className={`${currentSize.icon} object-contain transition-transform duration-300 ${iconClassName}`}
+        className={`${currentSize.icon} object-contain shrink-0 ${iconClassName}`}
       />
-      <span className={`font-display text-white uppercase transition-colors ${currentSize.text} ${textClassName}`}>
+      <span className={`font-display text-white uppercase shrink-0 ${currentSize.text} ${textClassName}`}>
         inside{showDot ? '.' : ''}
       </span>
     </div>

@@ -28,8 +28,6 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, onNavigate }) => {
         <BrandLogo
           onClick={() => onNavigate('home')}
           size="md"
-          iconClassName="group-hover:scale-110"
-          textClassName="group-hover:text-white/80"
         />
 
         {/* Center Desktop Navigation Links */}
