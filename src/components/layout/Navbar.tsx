@@ -2,6 +2,7 @@ import React from 'react';
 import type { ActiveTab } from '../../lib/types';
 import { Camera, Upload, Search, Columns, User } from 'lucide-react';
 import { useProfile } from '../../context/ProfileContext';
+import { BrandLogo } from '../common/BrandLogo';
 
 interface NavbarProps {
   activeTab: ActiveTab;
@@ -24,19 +25,12 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, onNavigate }) => {
       {/* Top Header Bar (Desktop & Mobile) */}
       <div className="mx-auto flex h-14 sm:h-16 max-w-7xl items-center justify-between px-4 sm:px-8 md:px-12">
         {/* Brand Name Title (Left) */}
-        <button
+        <BrandLogo
           onClick={() => onNavigate('home')}
-          className="flex items-center space-x-2.5 text-left group shrink-0"
-        >
-          <img
-            src="/logo.svg"
-            alt="inside logo"
-            className="h-6 w-auto sm:h-7 object-contain transition-transform duration-300 group-hover:scale-110"
-          />
-          <span className="font-display text-xl sm:text-2xl font-black tracking-widest text-white uppercase group-hover:text-white/80 transition-colors">
-            inside
-          </span>
-        </button>
+          size="md"
+          iconClassName="group-hover:scale-110"
+          textClassName="group-hover:text-white/80"
+        />
 
         {/* Center Desktop Navigation Links */}
         <nav className="hidden md:flex items-center space-x-1">

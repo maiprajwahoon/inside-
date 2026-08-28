@@ -5,6 +5,7 @@ import { CustomCursor } from './CustomCursor';
 import { HeroTypography } from './HeroTypography';
 import { HiddenFoodWorld } from './HiddenFoodWorld';
 import { Camera, Upload, Search, ArrowRight } from 'lucide-react';
+import { BrandLogo } from '../common/BrandLogo';
 
 interface HomepageHeroProps {
   onNavigate: (tab: any) => void;
@@ -75,16 +76,9 @@ export const HomepageHero: React.FC<HomepageHeroProps> = ({ onNavigate }) => {
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
               viewport={{ margin: '-10% 0px -10% 0px' }}
               transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-              className="select-none flex items-center justify-center space-x-4 sm:space-x-6"
+              className="select-none flex justify-center"
             >
-              <img
-                src="/logo.svg"
-                alt="inside logo"
-                className="h-10 w-auto sm:h-20 md:h-24 object-contain drop-shadow-[0_10px_35px_rgba(0,0,0,0.9)]"
-              />
-              <h2 className="font-display text-4xl font-black tracking-tight text-white sm:text-7xl md:text-8xl uppercase leading-none drop-shadow-[0_10px_35px_rgba(0,0,0,0.9)]">
-                inside.
-              </h2>
+              <BrandLogo size="hero" showDot />
             </motion.div>
 
             {/* Apple-Style Line 2: SCAN YOUR FOOD. */}
