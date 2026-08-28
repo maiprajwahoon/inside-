@@ -26,8 +26,13 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, onNavigate }) => {
         {/* Brand Name Title (Left) */}
         <button
           onClick={() => onNavigate('home')}
-          className="flex items-center space-x-2 text-left group shrink-0"
+          className="flex items-center space-x-2.5 text-left group shrink-0"
         >
+          <img
+            src="/logo.svg"
+            alt="inside logo"
+            className="h-6 w-auto sm:h-7 object-contain transition-transform duration-300 group-hover:scale-110"
+          />
           <span className="font-display text-xl sm:text-2xl font-black tracking-widest text-white uppercase group-hover:text-white/80 transition-colors">
             inside
           </span>

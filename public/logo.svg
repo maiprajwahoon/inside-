@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="350 280 320 430" fill="none">
+  <!-- Open Door Panel -->
+  <polygon points="369,329 552,303 552,696 369,670" fill="#FFFFFF" />
+  <!-- Door Knob -->
+  <circle cx="526" cy="513" r="14" fill="#030303" />
+  <!-- Outer Frame -->
+  <path d="M 552,330 L 657,330 L 657,669 L 552,669 L 552,634 L 624,634 L 624,365 L 552,365 Z" fill="#FFFFFF" />
+</svg>

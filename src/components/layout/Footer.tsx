@@ -11,9 +11,16 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-8 md:flex-row">
         {/* Brand & Bold About Us Section */}
         <div className="flex flex-col items-center md:items-start space-y-2 max-w-md text-center md:text-left">
-          <span className="font-display text-2xl font-black tracking-widest text-white uppercase">
-            inside
-          </span>
+          <div className="flex items-center space-x-2.5">
+            <img
+              src="/logo.svg"
+              alt="inside logo"
+              className="h-7 w-auto object-contain"
+            />
+            <span className="font-display text-2xl font-black tracking-widest text-white uppercase">
+              inside
+            </span>
+          </div>
           <p className="text-sm font-bold leading-relaxed text-white/90">
             We just think you deserve to know exactly what’s in your food, without any of the confusing jargon or fear-mongering. We're here to make sense of the science so you can eat with confidence.
           </p>
