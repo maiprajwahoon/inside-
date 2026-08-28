@@ -6,11 +6,19 @@
     --font-display: 'Syne', Georgia, serif;
   }
 
+  * {
+    -webkit-tap-highlight-color: transparent !important;
+    touch-action: manipulation;
+  }
+
   body {
     font-family: var(--font-sans);
     background-color: #030303;
     color: #F5F5F7;
-    cursor: default; /* Keep actual OS mouse cursor visible */
+    cursor: default;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
 
@@ -40,6 +48,15 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: #404040;
+}
+
+/* Hide scrollbar for clean mobile navigation */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 /* Scan line keyframe animation fallback */
