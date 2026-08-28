@@ -17,7 +17,6 @@ export const HiddenFoodWorld: React.FC<HiddenFoodWorldProps> = ({ mouseX, mouseY
 
     if (!cards || cards.length === 0) return;
 
-    // Cache card center positions once
     const cardPositions = Array.from(cards).map((card) => {
       const rect = card.getBoundingClientRect();
       return {
@@ -33,7 +32,7 @@ export const HiddenFoodWorld: React.FC<HiddenFoodWorldProps> = ({ mouseX, mouseY
       const curX = mouseX.get();
       const curY = mouseY.get();
 
-      const revealRadius = 380;
+      const revealRadius = 350;
 
       cardPositions.forEach((card) => {
         const dx = curX - card.centerX;
@@ -64,19 +63,27 @@ export const HiddenFoodWorld: React.FC<HiddenFoodWorldProps> = ({ mouseX, mouseY
     };
   }, [mouseX, mouseY]);
 
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 640;
+
   return (
-    <div ref={containerRef} className="relative h-screen w-full overflow-hidden bg-[#030303] pointer-events-none">
+    <div ref={containerRef} className="relative h-screen w-full overflow-hidden bg-[#030303] pointer-events-none max-w-full">
       {MOCK_PRODUCTS.slice(0, 18).map((product) => {
+        // Clamp mobile X position between 18% and 82% to prevent screen overflow
+        const posX = isMobile
+          ? Math.max(18, Math.min(82, product.position.x))
+          : product.position.x;
+        const cardScale = isMobile ? product.position.scale * 0.65 : product.position.scale;
+
         return (
           <div
             key={product.id}
-            data-scale={product.position.scale}
+            data-scale={cardScale}
             data-rotation={product.position.rotation}
             className="food-card-item absolute select-none pointer-events-none transition-transform duration-75 ease-out will-change-transform"
             style={{
-              left: `${product.position.x}%`,
+              left: `${posX}%`,
               top: `${product.position.y}%`,
-              transform: `translate3d(-50%, -50%, 0) rotate(${product.position.rotation}deg) scale(${product.position.scale})`,
+              transform: `translate3d(-50%, -50%, 0) rotate(${product.position.rotation}deg) scale(${cardScale})`,
               zIndex: product.position.depth * 3,
             }}
           >
