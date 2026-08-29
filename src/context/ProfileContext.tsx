@@ -21,15 +21,16 @@ interface ProfileContextType {
   updateProfile: (newProfile: Partial<UserProfile>) => void;
   resetProfile: () => void;
   clearProfile: () => void;
+  purgeAllLegacyData: () => void;
 }
 
 const ProfileContext = createContext<ProfileContextType | undefined>(undefined);
 
-const LOCAL_STORAGE_KEY_PROFILE = 'inside_user_profile_v4';
-const LOCAL_STORAGE_KEY_ROLE = 'inside_user_role_v1';
-const LOCAL_STORAGE_KEY_BUYER = 'inside_buyer_profile_v1';
-const LOCAL_STORAGE_KEY_ORDERS = 'inside_purchase_orders_v1';
-const LOCAL_STORAGE_KEY_LISTINGS = 'inside_market_listings_v1';
+const LOCAL_STORAGE_KEY_PROFILE = 'inside_user_profile_v10_agri';
+const LOCAL_STORAGE_KEY_ROLE = 'inside_user_role_v10_agri';
+const LOCAL_STORAGE_KEY_BUYER = 'inside_buyer_profile_v10_agri';
+const LOCAL_STORAGE_KEY_ORDERS = 'inside_purchase_orders_v10_agri';
+const LOCAL_STORAGE_KEY_LISTINGS = 'inside_market_listings_v10_agri';
 
 const INITIAL_MARKET_LISTINGS: MarketListing[] = [
   {
@@ -61,6 +62,26 @@ const INITIAL_MARKET_LISTINGS: MarketListing[] = [
 ];
 
 export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  // Startup purge of legacy keys
+  useEffect(() => {
+    try {
+      const legacyKeys = [
+        'inside_user_profile',
+        'inside_user_profile_v1',
+        'inside_user_profile_v2',
+        'inside_user_profile_v3',
+        'inside_user_profile_v4',
+        'inside_user_role_v1',
+        'inside_buyer_profile_v1',
+        'inside_purchase_orders_v1',
+        'inside_market_listings_v1',
+      ];
+      legacyKeys.forEach((key) => localStorage.removeItem(key));
+    } catch {
+      // ignore
+    }
+  }, []);
+
   const [userProfile, setUserProfile] = useState<UserProfile>(() => {
     try {
       const saved = localStorage.getItem(LOCAL_STORAGE_KEY_PROFILE);
@@ -220,6 +241,19 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
     setUserProfile(empty);
   };
 
+  const purgeAllLegacyData = () => {
+    try {
+      localStorage.clear();
+      setUserRoleState('FARMER');
+      setBuyerProfile(INITIAL_BUYER_PROFILE);
+      setPurchaseOrders(INITIAL_PURCHASE_ORDERS);
+      setMarketListings(INITIAL_MARKET_LISTINGS);
+      setUserProfile({ allergies: [], diets: [], avoidIngredients: [] });
+    } catch (e) {
+      console.error('Failed to clear local storage', e);
+    }
+  };
+
   return (
     <ProfileContext.Provider
       value={{
@@ -239,6 +273,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
         updateProfile,
         resetProfile,
         clearProfile,
+        purgeAllLegacyData,
       }}
     >
       {children}

@@ -15,6 +15,7 @@ export const ProfileView: React.FC = () => {
     marketListings,
     addMarketListing,
     removeMarketListing,
+    purgeAllLegacyData,
   } = useProfile();
 
   const [activeTabSection, setActiveTabSection] = useState<'FARMER' | 'BUYER'>('FARMER');
@@ -100,6 +101,20 @@ export const ProfileView: React.FC = () => {
             >
               <Store className="h-4 w-4" />
               <span>🏢 BUYER MODE</span>
+            </button>
+          </div>
+
+          {/* Reset Database Button */}
+          <div className="flex justify-end pt-2">
+            <button
+              onClick={() => {
+                purgeAllLegacyData();
+                showFeedback('CLEARED ALL CACHED BROWSER DATA & REFRESHED AGRI DATABASE!');
+              }}
+              className="rounded-xl border border-red-500/40 bg-red-500/10 px-4 py-2 text-xs font-mono font-bold text-red-400 hover:bg-red-500/20 transition-all uppercase tracking-wider"
+              title="Purge legacy local storage cache and reload fresh agricultural dataset"
+            >
+              🔄 CLEAR CACHED BROWSER DATABASE
             </button>
           </div>
         </div>
