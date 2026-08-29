@@ -14,6 +14,8 @@ export interface CropItem {
   qualityGrade?: string;
   freshnessScore?: number; // e.g. 95%
   status: CropStatus;
+  isListedForSale?: boolean;
+  askingPricePerKg?: number;
 }
 
 export interface SellingPreferences {
@@ -90,6 +92,20 @@ export interface BuyerProfile {
   verified: boolean;
   phone: string;
   email: string;
+}
+
+export interface MarketListing {
+  id: string;
+  cropId: string;
+  cropName: string;
+  variety: string;
+  farmerName: string;
+  farmerLocation: string;
+  quantityKg: number;
+  askingPricePerKg: number;
+  qualityGrade: string;
+  freshnessIndicator: string;
+  listedDate: string;
 }
 
 export type OrderStatus = 'PENDING' | 'ACCEPTED' | 'REJECTED' | 'DELIVERED';
