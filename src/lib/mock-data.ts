@@ -1,83 +1,14 @@
 import type { Product, UserProfile } from './types';
 
 export const INITIAL_USER_PROFILE: UserProfile = {
-  allergies: ['Lactose', 'Peanut'],
-  diets: ['Vegetarian', 'Low Sugar'],
-  avoidIngredients: ['Palm Oil', 'Maltodextrin'],
+  allergies: [],
+  diets: [],
+  avoidIngredients: [],
 };
 
-export const ALLERGEN_OPTIONS = [
-  'Milk',
-  'Lactose',
-  'Peanut',
-  'Tree Nut',
-  'Almond',
-  'Cashew',
-  'Walnut',
-  'Egg',
-  'Soy',
-  'Gluten',
-  'Wheat',
-  'Shellfish',
-  'Fish',
-  'Sesame',
-  'Mustard',
-  'Sulfites',
-  'Celery',
-  'Lupin',
-  'Molluscs',
-  'Corn',
-];
-
-export const DIET_OPTIONS = [
-  'Vegetarian',
-  'Vegan',
-  'Jain',
-  'Halal',
-  'Low Sugar',
-  'Low Sodium',
-  'Low Fat',
-  'Keto',
-  'Diabetic-Friendly',
-  'High Protein',
-  'Low Carb',
-  'Paleo',
-];
-
-export const PRESET_PROFILES: { label: string; profile: UserProfile }[] = [
-  {
-    label: 'Lactose Intolerant + Low Sugar',
-    profile: {
-      allergies: ['Lactose', 'Milk'],
-      diets: ['Low Sugar'],
-      avoidIngredients: ['Palm Oil'],
-    },
-  },
-  {
-    label: 'Severe Peanut & Nut Allergy',
-    profile: {
-      allergies: ['Peanut', 'Tree Nut', 'Almond', 'Cashew', 'Sesame'],
-      diets: [],
-      avoidIngredients: [],
-    },
-  },
-  {
-    label: 'Strict Vegan + Clean Label',
-    profile: {
-      allergies: ['Milk', 'Lactose', 'Egg', 'Shellfish', 'Fish'],
-      diets: ['Vegan', 'Vegetarian'],
-      avoidIngredients: ['Palm Oil', 'Maltodextrin', 'Artificial Colors', 'High Fructose Corn Syrup'],
-    },
-  },
-  {
-    label: 'Jain Diet + Gluten Free',
-    profile: {
-      allergies: ['Gluten', 'Wheat'],
-      diets: ['Jain', 'Vegetarian'],
-      avoidIngredients: ['Garlic', 'Onion'],
-    },
-  },
-];
+export const ALLERGEN_OPTIONS: string[] = [];
+export const DIET_OPTIONS: string[] = [];
+export const PRESET_PROFILES: { label: string; profile: UserProfile }[] = [];
 
 export const MOCK_PRODUCTS: Product[] = [
   // 1. Alphonso Mango (Agricultural Produce)
@@ -132,7 +63,32 @@ export const MOCK_PRODUCTS: Product[] = [
     ],
   },
 
-  // 3. Sona Masoori Rice (Agricultural Grain)
+  // 3. Spinach (Palak - Leafy Veg)
+  {
+    id: 'prod-agri-03-leafy',
+    name: 'Fresh Palak (Spinach)',
+    brand: 'Farm Direct',
+    category: 'Fresh Produce',
+    subtitle: 'Tender Green Leafy Crop',
+    packageStyle: { accentColor: '#10B981', shape: 'pouch', tagline: 'HIGH PERISHABLE' },
+    position: { x: 42, y: 22, scale: 1.2, rotation: -4, depth: 2 },
+    nutrition: { calories: 23, sugar: 0.4, protein: 2.9, fat: 0.4, saturatedFat: 0.1, sodium: 79, carbs: 3.6 },
+    agriData: {
+      isAgriProduce: true,
+      originRegion: 'Niphad, Nashik',
+      visualQuality: 'Crisp vibrant green leaves, un-wilted stems',
+      visibleDefects: 'None',
+      estimatedGrade: 'Grade A (Fresh Retail)',
+      freshnessIndicator: '98% Harvest Freshness (Day 1)',
+      processingSuitability: 'Ideal for Immediate Fresh Sale & Dehydration Units',
+      confidenceScore: 98,
+    },
+    ingredients: [
+      { id: 'ing-palak-leaf', name: 'Fresh Organic Spinach Leaves (100%)', category: 'Whole Food', purpose: 'Nutrient-rich leafy veg.', description: 'Harvested spinach foliage.' },
+    ],
+  },
+
+  // 4. Sona Masoori Rice (Agricultural Grain)
   {
     id: 'prod-agri-03',
     name: 'Sona Masoori Raw Rice',
@@ -140,7 +96,7 @@ export const MOCK_PRODUCTS: Product[] = [
     category: 'Grains & Pulses',
     subtitle: 'Medium-Grain Lightweight Aromatic Rice',
     packageStyle: { accentColor: '#10B981', shape: 'pouch', tagline: 'GRAIN PURITY 99%' },
-    position: { x: 42, y: 22, scale: 1.2, rotation: -4, depth: 2 },
+    position: { x: 30, y: 44, scale: 1.05, rotation: 8, depth: 2 },
     nutrition: { calories: 130, sugar: 0.1, protein: 2.7, fat: 0.3, saturatedFat: 0.1, sodium: 1, carbs: 28.2 },
     agriData: {
       isAgriProduce: true,
@@ -157,7 +113,7 @@ export const MOCK_PRODUCTS: Product[] = [
     ],
   },
 
-  // 4. Sharbati Whole Wheat (Agricultural Grain)
+  // 5. Sharbati Whole Wheat (Agricultural Grain)
   {
     id: 'prod-agri-04',
     name: 'Sharbati Whole Wheat Grain',
@@ -178,26 +134,7 @@ export const MOCK_PRODUCTS: Product[] = [
       confidenceScore: 96,
     },
     ingredients: [
-      { id: 'ing-sharbati-wheat', name: 'Sharbati Whole Wheat Kernels (100%)', category: 'Grain', purpose: 'Flour milling grain.', description: 'Raw harvested wheat grain.', flaggedDiets: ['Gluten', 'Wheat'] },
-    ],
-  },
-
-  // 5. Haldiram's Aloo Bhujia (Processed Food)
-  {
-    id: 'prod-01',
-    name: 'Aloo Bhujia',
-    brand: "Haldiram's",
-    category: 'Snack',
-    subtitle: 'Crispy Potato & Chickpea Noodle Snack',
-    packageStyle: { accentColor: '#E53E3E', shape: 'pouch', tagline: 'ALOO BHUJIA CRISP' },
-    position: { x: 20, y: 55, scale: 1.05, rotation: -10, depth: 2 },
-    nutrition: { calories: 285, sugar: 1.2, protein: 5.2, fat: 19.4, saturatedFat: 6.2, sodium: 580, carbs: 24.1 },
-    ingredients: [
-      { id: 'ing-potato-h', name: 'Dehydrated Potato Flakes (44%)', category: 'Whole Food', purpose: 'Crispy potato base.', description: 'Dehydrated russet potato pulp.' },
-      { id: 'ing-besan-h', name: 'Gram Flour (Besan 22%)', category: 'Grain', purpose: 'Dough binder and crispness.', description: 'Milled chana dal chickpea flour.' },
-      { id: 'ing-palm-oil-h', name: 'Edible Vegetable Oil (Palmolein)', category: 'Fat/Oil', purpose: 'Frying medium.', description: 'Refined palm olein.', flaggedDiets: ['Palm Oil'] },
-      { id: 'ing-peanuts-h', name: 'Peanut Oil Traces', category: 'Allergen', purpose: 'Flavor enhancer.', description: 'Groundnut oil.', flaggedDiets: ['Peanut'] },
-      { id: 'ing-spices-h', name: 'Mint, Red Chili, Amchur & Black Salt', category: 'Whole Food', purpose: 'Tangy spice seasoning.', description: 'Ground Pudina, Kala Namak and spices.', flaggedDiets: ['Low Sodium'] },
+      { id: 'ing-sharbati-wheat', name: 'Sharbati Whole Wheat Kernels (100%)', category: 'Grain', purpose: 'Flour milling grain.', description: 'Raw harvested wheat grain.' },
     ],
   },
 
@@ -222,7 +159,7 @@ export const MOCK_PRODUCTS: Product[] = [
       confidenceScore: 94,
     },
     ingredients: [
-      { id: 'ing-red-onion', name: 'Fresh Nashik Red Onions (100%)', category: 'Whole Food', purpose: 'Raw vegetable crop.', description: 'Harvested cured red onion bulbs.', flaggedDiets: ['Jain'] },
+      { id: 'ing-red-onion', name: 'Fresh Nashik Red Onions (100%)', category: 'Whole Food', purpose: 'Raw vegetable crop.', description: 'Harvested cured red onion bulbs.' },
     ],
   },
 
@@ -251,25 +188,7 @@ export const MOCK_PRODUCTS: Product[] = [
     ],
   },
 
-  // 8. Parle-G (Processed Food)
-  {
-    id: 'prod-08',
-    name: 'Original Glucose Biscuits',
-    brand: 'Parle-G',
-    category: 'Cookies',
-    subtitle: 'India’s Favorite Glucose Milk Biscuits',
-    packageStyle: { accentColor: '#D69E2E', shape: 'box', tagline: 'GLUCOSE BISCUIT' },
-    position: { x: 10, y: 78, scale: 1.1, rotation: -12, depth: 1 },
-    nutrition: { calories: 225, sugar: 14.5, protein: 3.3, fat: 6.8, saturatedFat: 3.1, sodium: 115, carbs: 38.0 },
-    ingredients: [
-      { id: 'ing-wheat-parle', name: 'Refined Wheat Flour (Maida 67%)', category: 'Grain', purpose: 'Biscuit dough matrix.', description: 'Milled wheat flour.', flaggedDiets: ['Gluten', 'Wheat'] },
-      { id: 'ing-sugar-parle', name: 'Cane Sugar & Invert Sugar Syrup (25%)', category: 'Sweetener', purpose: 'Sweetness and golden crust.', description: 'Sucrose syrup.', flaggedDiets: ['Low Sugar'] },
-      { id: 'ing-oil-parle', name: 'Refined Palm Oil', category: 'Fat/Oil', purpose: 'Shortening.', description: 'Palm oil.', flaggedDiets: ['Palm Oil'] },
-      { id: 'ing-milk-parle', name: 'Milk Solids (Skimmed Milk Powder)', category: 'Dairy', purpose: 'Milk flavor.', description: 'Skimmed milk powder.', flaggedDiets: ['Lactose', 'Milk', 'Vegan'] },
-    ],
-  },
-
-  // 9. Kufri Jyoti Potato (Agricultural Produce)
+  // 8. Kufri Jyoti Potato (Agricultural Produce)
   {
     id: 'prod-agri-07',
     name: 'Kufri Jyoti Ware Potato',
@@ -294,75 +213,7 @@ export const MOCK_PRODUCTS: Product[] = [
     ],
   },
 
-  // 10. Amul Taaza Milk (Processed Dairy)
-  {
-    id: 'prod-13',
-    name: 'Taaza Toned Milk',
-    brand: 'Amul',
-    category: 'Dairy',
-    subtitle: 'Fresh Homogenized & UHT Toned Milk',
-    packageStyle: { accentColor: '#3182CE', shape: 'pouch', tagline: 'PURE TONED MILK' },
-    position: { x: 30, y: 44, scale: 1.05, rotation: 8, depth: 2 },
-    nutrition: { calories: 118, sugar: 9.4, protein: 6.2, fat: 6.0, saturatedFat: 3.8, sodium: 100, carbs: 9.4 },
-    ingredients: [
-      { id: 'ing-toned-milk', name: 'Toned Bovine Milk (3.0% Fat, 8.5% SNF)', category: 'Dairy', purpose: 'Calcium, protein, and hydration base.', description: 'Homogenized pasteurized milk.', flaggedDiets: ['Lactose', 'Milk', 'Vegan'] },
-      { id: 'ing-lactose-amul', name: 'Natural Milk Lactose', category: 'Dairy', purpose: 'Dairy disaccharide sugar.', description: 'Lactose.', flaggedDiets: ['Lactose', 'Milk'] },
-    ],
-  },
-
-  // 11. Paper Boat Aam Panna (Processed Beverage)
-  {
-    id: 'prod-20',
-    name: 'Raw Mango Aam Panna Drink',
-    brand: 'Paper Boat',
-    category: 'Beverage',
-    subtitle: 'Traditional Raw Green Mango Drink with Cumin & Mint',
-    packageStyle: { accentColor: '#38A169', shape: 'pouch', tagline: 'RAW MANGO PANNA' },
-    position: { x: 55, y: 15, scale: 1.0, rotation: -5, depth: 2 },
-    nutrition: { calories: 112, sugar: 24.2, protein: 0.2, fat: 0.0, saturatedFat: 0.0, sodium: 190, carbs: 27.5 },
-    ingredients: [
-      { id: 'ing-raw-mango', name: 'Green Raw Mango Pulp (Kachhi Kairi 14%)', category: 'Whole Food', purpose: 'Tangy digestive green mango juice.', description: 'Unripe mango pulp.' },
-      { id: 'ing-sugar-pb', name: 'Sugar', category: 'Sweetener', purpose: 'Sweetness.', description: 'Cane sugar.', flaggedDiets: ['Low Sugar'] },
-      { id: 'ing-black-salt-pb', name: 'Black Salt & Roasted Cumin (Jeera)', category: 'Whole Food', purpose: 'Traditional Indian digestive spices.', description: 'Kala Namak & Jeera.' },
-    ],
-  },
-
-  // 12. Maggi 2-Minute Masala Noodles (Processed Food)
-  {
-    id: 'prod-12',
-    name: '2-Minute Masala Instant Noodles',
-    brand: 'Maggi',
-    category: 'Instant Noodles',
-    subtitle: 'Classic Indian Spiced Wheat Noodles',
-    packageStyle: { accentColor: '#E53E3E', shape: 'box', tagline: '2-MINUTE MASALA' },
-    position: { x: 78, y: 22, scale: 1.2, rotation: 10, depth: 1 },
-    nutrition: { calories: 310, sugar: 1.8, protein: 6.8, fat: 12.5, saturatedFat: 5.6, sodium: 850, carbs: 43.0 },
-    ingredients: [
-      { id: 'ing-flour-maggi', name: 'Refined Wheat Flour (Maida 82%)', category: 'Grain', purpose: 'Noodle dough base.', description: 'Wheat flour.', flaggedDiets: ['Gluten', 'Wheat'] },
-      { id: 'ing-palm-maggi', name: 'Palm Oil', category: 'Fat/Oil', purpose: 'Flash frying noodles.', description: 'Palm oil.', flaggedDiets: ['Palm Oil'] },
-      { id: 'ing-masala-maggi', name: 'Tastemaker Spice Mix (Coriander, Cumin, Turmeric, Chili, Garlic, Onion)', category: 'Additive', purpose: 'Iconic savory noodle broth.', description: 'Spice blend.', flaggedDiets: ['Jain'] },
-      { id: 'ing-salt-maggi', name: 'Iodized Salt & Wheat Gluten', category: 'Additive', purpose: 'Broth seasoning & texture.', description: 'Salt.', flaggedDiets: ['Low Sodium', 'Gluten', 'Wheat'] },
-    ],
-  },
-
-  // 13. Lay's Classic Salted
-  {
-    id: 'prod-04',
-    name: 'Classic Salted Potato Chips',
-    brand: "Lay's",
-    category: 'Chips',
-    subtitle: 'Crispy Sliced Golden Potato Chips',
-    packageStyle: { accentColor: '#F59E0B', shape: 'pouch', tagline: 'CLASSIC SALTED' },
-    position: { x: 15, y: 38, scale: 1.1, rotation: -4, depth: 1 },
-    nutrition: { calories: 268, sugar: 0.5, protein: 3.2, fat: 17.0, saturatedFat: 7.2, sodium: 290, carbs: 26.5 },
-    ingredients: [
-      { id: 'ing-potato-lays', name: 'Selected Potatoes (89%)', category: 'Whole Food', purpose: 'Primary starch chip base.', description: 'Sliced whole potatoes.' },
-      { id: 'ing-oil-lays', name: 'Edible Vegetable Oil (Palmolein)', category: 'Fat/Oil', purpose: 'Frying medium.', description: 'Refined palm oil.', flaggedDiets: ['Palm Oil'] },
-      { id: 'ing-salt-lays', name: 'Iodized Salt (1.2%)', category: 'Additive', purpose: 'Simple sea salt seasoning.', description: 'Purified sodium chloride.' },
-    ],
-  },
-
-  // 14. Yellow Soybean (Agricultural Grain)
+  // 9. Yellow Soybean (Agricultural Grain)
   {
     id: 'prod-agri-08',
     name: 'Yellow Soybean Seeds',
@@ -383,43 +234,7 @@ export const MOCK_PRODUCTS: Product[] = [
       confidenceScore: 96,
     },
     ingredients: [
-      { id: 'ing-raw-soybean', name: 'Raw Yellow Soybean Grain (100%)', category: 'Grain', purpose: 'Oilseed crop.', description: 'Harvested soybean seeds.', flaggedDiets: ['Soy'] },
-    ],
-  },
-
-  // 15. Kissan Tomato Ketchup (Processed Food)
-  {
-    id: 'prod-17',
-    name: 'Fresh Tomato Ketchup',
-    brand: 'Kissan',
-    category: 'Sauce',
-    subtitle: '100% Real Juicy Red Tomato Sauce',
-    packageStyle: { accentColor: '#E53E3E', shape: 'bottle', tagline: '100% REAL TOMATOES' },
-    position: { x: 35, y: 85, scale: 1.05, rotation: -8, depth: 3 },
-    nutrition: { calories: 28, sugar: 6.8, protein: 0.3, fat: 0.1, saturatedFat: 0.0, sodium: 160, carbs: 7.2 },
-    ingredients: [
-      { id: 'ing-tomato-kissan', name: 'Tomato Paste (100% Vine Ripened)', category: 'Whole Food', purpose: 'Rich savory tomato sauce base.', description: 'Concentrated tomato pulp.' },
-      { id: 'ing-sugar-kissan', name: 'Cane Sugar', category: 'Sweetener', purpose: 'Sweetness.', description: 'Sucrose.', flaggedDiets: ['Low Sugar'] },
-      { id: 'ing-vinegar-kissan', name: 'Acidity Regulator (Acetic Acid)', category: 'Additive', purpose: 'Tanginess & preservative.', description: 'Vinegar acid.' },
-      { id: 'ing-preservative-kissan', name: 'Sodium Benzoate (INS 211)', category: 'Preservative', purpose: 'Prevents spoilage.', description: 'Preservative salt.' },
-    ],
-  },
-
-  // 16. Cadbury Dairy Milk Silk (Processed Chocolate)
-  {
-    id: 'prod-16',
-    name: 'Dairy Milk Silk Chocolate',
-    brand: 'Cadbury',
-    category: 'Chocolate',
-    subtitle: 'Smooth & Creamy Pure Milk Chocolate Bar',
-    packageStyle: { accentColor: '#553C9A', shape: 'bar', tagline: 'SILK MILK CHOCOLATE' },
-    position: { x: 80, y: 35, scale: 1.15, rotation: -12, depth: 1 },
-    nutrition: { calories: 270, sugar: 28.5, protein: 3.8, fat: 16.5, saturatedFat: 10.2, sodium: 65, carbs: 29.5 },
-    ingredients: [
-      { id: 'ing-milk-cad', name: 'Milk Solids (Whey & Whole Powder 20%)', category: 'Dairy', purpose: 'Ultra creamy smooth silk texture.', description: 'Dehydrated dairy.', flaggedDiets: ['Lactose', 'Milk', 'Vegan'] },
-      { id: 'ing-sugar-cad', name: 'Cane Sugar', category: 'Sweetener', purpose: 'Sweetness.', description: 'Sucrose.', flaggedDiets: ['Low Sugar'] },
-      { id: 'ing-cocoa-cad', name: 'Cocoa Butter & Cocoa Solids (24%)', category: 'Whole Food', purpose: 'Pure chocolate mass.', description: 'Cacao butter.' },
-      { id: 'ing-emuls-cad', name: 'Soy Lecithin (INS 322)', category: 'Emulsifier', purpose: 'Texture stabilizer.', description: 'Soy lecithin.', flaggedDiets: ['Soy'] },
+      { id: 'ing-raw-soybean', name: 'Raw Yellow Soybean Grain (100%)', category: 'Grain', purpose: 'Oilseed crop.', description: 'Harvested soybean seeds.' },
     ],
   },
 ];

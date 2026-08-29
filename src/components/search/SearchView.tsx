@@ -3,7 +3,7 @@ import { useProfile } from '../../context/ProfileContext';
 import { MOCK_PRODUCTS } from '../../lib/mock-data';
 import type { Product } from '../../lib/types';
 import { analyzeProduct } from '../../lib/analyzer';
-import { Search, X, ArrowUpRight } from 'lucide-react';
+import { Search, X, ArrowUpRight, Sprout } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface SearchViewProps {
@@ -16,14 +16,15 @@ export const SearchView: React.FC<SearchViewProps> = ({ onSelectProduct }) => {
   const [isFocused, setIsFocused] = useState(false);
 
   const popularSuggestions = [
-    'Alphonso Mango',
-    'Desi Tomato',
-    'Sona Masoori Rice',
-    'Sharbati Wheat',
+    'Ratnagiri Alphonso Mango',
+    'Desi Red Tomato',
+    'Fresh Palak (Spinach)',
+    'Sona Masoori Raw Rice',
+    'Sharbati Whole Wheat Grain',
     'Nashik Red Onion',
-    "Haldiram's Aloo Bhujia",
-    'Amul Taaza Milk',
-    'Paper Boat Raw Mango',
+    'Salem Curcumin Turmeric',
+    'Kufri Jyoti Potato',
+    'Yellow Soybean Seeds',
   ];
 
   const filteredProducts = useMemo(() => {
@@ -46,15 +47,19 @@ export const SearchView: React.FC<SearchViewProps> = ({ onSelectProduct }) => {
       <div className="mx-auto max-w-4xl space-y-12">
         {/* Header */}
         <div className="text-center space-y-3">
+          <span className="text-xs font-mono font-bold tracking-widest text-emerald-400 uppercase flex items-center justify-center gap-2">
+            <Sprout className="h-4 w-4" />
+            AGRICULTURAL PRODUCE SEARCH & QUALITY ASSESSMENT
+          </span>
           <h1 className="font-display text-4xl font-black tracking-tight sm:text-6xl uppercase text-white">
-            WHAT ARE YOU ANALYZING?
+            WHAT CROP ARE YOU ANALYZING?
           </h1>
           <p className="text-sm font-bold text-white/60 max-w-md mx-auto">
-            Search any agricultural produce, crop sample, ingredient or food product to evaluate quality grade, processing suitability, and profile compatibility.
+            Search any agricultural produce, mango crop harvest, grain batch, or vegetable to evaluate quality grade, freshness, and processing suitability.
           </p>
         </div>
 
-        {/* Tactile & Premium Search Input */}
+        {/* Search Input */}
         <div className="relative mx-auto max-w-2xl space-y-6">
           <motion.div
             animate={{
@@ -80,7 +85,7 @@ export const SearchView: React.FC<SearchViewProps> = ({ onSelectProduct }) => {
             )}
           </motion.div>
 
-          {/* Suggestions Dropdown (POPULAR / RECENT / TRENDING text list) */}
+          {/* Suggestions Dropdown */}
           <AnimatePresence>
             {!query && isFocused && (
               <motion.div
@@ -90,10 +95,9 @@ export const SearchView: React.FC<SearchViewProps> = ({ onSelectProduct }) => {
                 transition={{ duration: 0.2 }}
                 className="rounded-xl border-2 border-white/15 bg-[#0A0A0E] p-6 space-y-4 shadow-2xl"
               >
-                {/* BOLDER PRETITLE HEADER */}
                 <div className="border-b border-white/15 pb-3">
                   <h3 className="font-display text-sm font-black tracking-widest text-white uppercase">
-                    POPULAR & RECENT SEARCHES
+                    POPULAR PRODUCE & CROPS
                   </h3>
                 </div>
 
@@ -114,12 +118,12 @@ export const SearchView: React.FC<SearchViewProps> = ({ onSelectProduct }) => {
           </AnimatePresence>
         </div>
 
-        {/* Intelligent Vertical Results List */}
+        {/* Results List */}
         {query && (
           <div className="space-y-4 pt-4">
             <div className="flex items-center justify-between border-b border-white/15 pb-3 text-xs font-mono font-black text-white/60 uppercase tracking-widest">
-              <span>{filteredProducts.length} SEARCH RESULTS FOR "{query}"</span>
-              <span>PERSONAL STATUS</span>
+              <span>{filteredProducts.length} PRODUCE RESULTS FOR "{query}"</span>
+              <span>QUALITY GRADE</span>
             </div>
 
             {filteredProducts.length > 0 ? (
@@ -134,41 +138,27 @@ export const SearchView: React.FC<SearchViewProps> = ({ onSelectProduct }) => {
                       transition={{ duration: 0.2 }}
                       className="group flex flex-col sm:flex-row sm:items-center justify-between py-6 px-4 -mx-4 rounded-xl hover:bg-white/[0.04] transition-all cursor-pointer gap-4"
                     >
-                      {/* Left Details */}
                       <div className="space-y-1">
                         <div className="flex items-center space-x-3">
-                          <span className="font-mono text-xs font-black text-white/60 uppercase tracking-widest">
+                          <span className="font-mono text-xs font-black text-emerald-400 uppercase tracking-widest">
                             {product.brand}
                           </span>
                           <span className="text-white/30">•</span>
                           <span className="text-xs font-bold text-white/50">{product.category}</span>
                         </div>
 
-                        <h3 className="font-display text-xl font-black text-white group-hover:text-white">
+                        <h3 className="font-display text-xl font-black text-white group-hover:text-emerald-300 transition-colors">
                           {product.name}
                         </h3>
 
                         <p className="text-xs font-bold text-white/60 font-mono">
-                          {product.ingredients.map((i) => i.name).join(' · ')}
+                          {product.agriData?.estimatedGrade || 'Grade A'} · {product.agriData?.originRegion || 'Indian Ag Belt'}
                         </p>
                       </div>
 
-                      {/* Right Verdict Status */}
                       <div className="flex items-center space-x-4 self-start sm:self-center">
-                        <span
-                          className={`text-xs font-mono font-black tracking-wider uppercase ${
-                            analysis.overallStatus === 'NOT_RECOMMENDED'
-                              ? 'text-red-400'
-                              : analysis.overallStatus === 'CAUTION'
-                              ? 'text-amber-400'
-                              : 'text-emerald-400'
-                          }`}
-                        >
-                          {analysis.overallStatus === 'NOT_RECOMMENDED'
-                            ? '🔴 PERSONAL CONFLICT'
-                            : analysis.overallStatus === 'CAUTION'
-                            ? '🟡 POTENTIAL CONCERN'
-                            : '🟢 NO PERSONAL CONFLICT'}
+                        <span className="text-xs font-mono font-black tracking-wider uppercase text-emerald-400">
+                          {analysis.statusLabel}
                         </span>
 
                         <ArrowUpRight className="h-4 w-4 text-white/40 group-hover:text-white transition-colors" />
@@ -179,8 +169,8 @@ export const SearchView: React.FC<SearchViewProps> = ({ onSelectProduct }) => {
               </div>
             ) : (
               <div className="py-16 text-center space-y-2">
-                <p className="text-base font-bold text-white/70">No food items found matching "{query}"</p>
-                <p className="text-xs text-white/40 font-mono">Try searching "Haldiram", "Lay's", "Peanut", "Milk", or "Bhujia".</p>
+                <p className="text-base font-bold text-white/70">No produce crops found matching "{query}"</p>
+                <p className="text-xs text-white/40 font-mono">Try searching "Mango", "Tomato", "Rice", "Wheat", or "Spinach".</p>
               </div>
             )}
           </div>

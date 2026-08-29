@@ -1,277 +1,309 @@
 import React, { useState } from 'react';
-import { useProfile } from '../../context/ProfileContext';
 import { MOCK_PRODUCTS } from '../../lib/mock-data';
 import type { Product } from '../../lib/types';
-import { analyzeProduct } from '../../lib/analyzer';
-import { ArrowUpRight } from 'lucide-react';
+import { Award, Sprout, Sparkles, Scale } from 'lucide-react';
 
 interface CompareViewProps {
-  onSelectProduct: (product: Product) => void;
+  onSelectProduct?: (product: Product) => void;
 }
 
-export const CompareView: React.FC<CompareViewProps> = ({ onSelectProduct }) => {
-  const { userProfile } = useProfile();
+export const CompareView: React.FC<CompareViewProps> = () => {
+  // Produce Batch Form State for Farmer Inspection Input
+  const [produceName, setProduceName] = useState('Ratnagiri Alphonso Mango');
+  const [approxSize, setApproxSize] = useState('Approx size of human hand / palm (8-10 cm diameter)');
+  const [mangoColor, setMangoColor] = useState('Golden yellow with subtle green blush');
+  const [harvestTiming, setHarvestTiming] = useState('Harvested 2 days ago (Morning pick)');
+  const [fertilizersUsed, setFertilizersUsed] = useState('Organic Vermicompost, Neem Cake, Bio-pesticides');
+  const [batchWeightKg, setBatchWeightKg] = useState('500');
+  const [orchardLocation, setOrchardLocation] = useState('Ratnagiri, Maharashtra');
+
+  // Assessment Result State
+  const [assessmentResult, setAssessmentResult] = useState<{
+    grade: string;
+    freshnessScore: number;
+    pathway: string;
+    estimatedPriceINR: number;
+    confidence: number;
+  } | null>(null);
+
+  // Produce Batch Comparison Selection
   const [selectedProductIds, setSelectedProductIds] = useState<string[]>([
-    MOCK_PRODUCTS[0].id,
-    MOCK_PRODUCTS[1].id,
-    MOCK_PRODUCTS[2].id,
+    MOCK_PRODUCTS[0]?.id || '',
+    MOCK_PRODUCTS[1]?.id || '',
   ]);
 
-  const selectedProducts = selectedProductIds
-    .map((id) => MOCK_PRODUCTS.find((p) => p.id === id))
-    .filter(Boolean) as Product[];
+  const handleGenerateAssessment = () => {
+    // Generate AI Produce Quality Grade based on input parameters
+    const isOrganic = fertilizersUsed.toLowerCase().includes('organic') || fertilizersUsed.toLowerCase().includes('neem');
+    const isFresh = harvestTiming.toLowerCase().includes('1') || harvestTiming.toLowerCase().includes('2') || harvestTiming.toLowerCase().includes('today');
 
-  const analyzedProducts = selectedProducts.map((p) => ({
-    product: p,
-    analysis: analyzeProduct(userProfile, p),
-  }));
+    const grade = isOrganic && isFresh ? 'GRADE A (EXPORT QUALITY)' : 'GRADE A (COMMERCIAL RETAIL)';
+    const freshnessScore = isFresh ? 97 : 91;
+    const pathway = isOrganic ? 'Export Buyers & High-End Retail' : 'Regional Wholesalers & Processing';
+    const price = produceName.toLowerCase().includes('mango') ? (isOrganic ? 90 : 75) : 30;
 
-  // Identify Best Match
-  let bestMatchIndex = 0;
-  let bestScore = -999;
-
-  analyzedProducts.forEach((item, idx) => {
-    let score = 100;
-    score -= item.analysis.conflictsCount * 50;
-    score -= item.analysis.concernsCount * 15;
-    score += item.product.nutrition.protein * 2;
-    score -= item.product.nutrition.sugar * 1;
-    if (score > bestScore) {
-      bestScore = score;
-      bestMatchIndex = idx;
-    }
-  });
-
-  const handleToggleProduct = (id: string, slotIndex: number) => {
-    setSelectedProductIds((prev) => {
-      const copy = [...prev];
-      copy[slotIndex] = id;
-      return copy;
+    setAssessmentResult({
+      grade,
+      freshnessScore,
+      pathway,
+      estimatedPriceINR: price,
+      confidence: 96,
     });
   };
+
+  const handleToggleProduct = (productId: string, slotIndex: number) => {
+    const updated = [...selectedProductIds];
+    updated[slotIndex] = productId;
+    setSelectedProductIds(updated);
+  };
+
+  const analyzedProducts = selectedProductIds
+    .map((id) => MOCK_PRODUCTS.find((p) => p.id === id))
+    .filter(Boolean) as Product[];
 
   return (
     <div className="min-h-screen bg-[#030303] py-16 px-6 md:px-16 text-[#F5F5F7]">
       <div className="mx-auto max-w-6xl space-y-12">
         {/* Header */}
         <div className="space-y-3 border-b border-white/10 pb-6">
-          <h1 className="font-display text-5xl font-black tracking-tight sm:text-6xl uppercase text-white">
-            COMPARE
+          <span className="text-xs font-mono font-bold tracking-widest text-emerald-400 uppercase flex items-center gap-2">
+            <Sprout className="h-4 w-4" />
+            PRODUCE BATCH INSPECTION & QUALITY COMPARISON
+          </span>
+          <h1 className="font-display text-4xl sm:text-5xl font-black tracking-tight uppercase text-white">
+            PRODUCE QUALITY ASSESSMENT
           </h1>
           <p className="text-base font-bold text-white/70">
-            Choose up to three agricultural produce items or food products to compare quality grade, processing suitability, and profile fit.
+            Type in your crop harvest parameters (size, color, harvest date, fertilizers) to evaluate quality grade and compare produce batches.
           </p>
         </div>
 
-        {/* Tactile Dropdown Selectors with Large Bold Labels */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          {[0, 1, 2].map((slotIdx) => (
-            <div key={slotIdx} className="space-y-2">
-              <span className="text-xs font-mono font-extrabold text-white/60 block tracking-widest uppercase">
-                PRODUCT 0{slotIdx + 1}
+        {/* SECTION 1: FARMER PRODUCE INSPECTION FORM */}
+        <div className="rounded-3xl border border-white/15 bg-[#0A0A0F] p-8 space-y-6 shadow-2xl">
+          <div className="flex items-center justify-between border-b border-white/10 pb-4">
+            <div>
+              <span className="text-[10px] font-mono text-emerald-400 font-bold uppercase block">
+                FARMER BATCH DATA INPUT
               </span>
-              <select
-                value={selectedProductIds[slotIdx] || ''}
-                onChange={(e) => handleToggleProduct(e.target.value, slotIdx)}
-                className="w-full rounded-xl border-2 border-white/20 bg-[#0B0B0F] px-4 py-3.5 text-sm font-extrabold text-white focus:border-white focus:outline-none transition-colors shadow-lg"
-              >
-                {MOCK_PRODUCTS.map((p) => (
-                  <option key={p.id} value={p.id} className="bg-[#0B0B0F] font-bold">
-                    {p.brand} — {p.name}
-                  </option>
-                ))}
-              </select>
+              <h2 className="font-display text-2xl font-black text-white uppercase mt-0.5">
+                INSPECT & GRADE CROP HARVEST
+              </h2>
             </div>
-          ))}
+            <Sparkles className="h-6 w-6 text-emerald-400" />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 font-mono text-xs">
+            <div className="space-y-1.5">
+              <label className="text-white/60 block">CROP / PRODUCE NAME & VARIETY</label>
+              <input
+                type="text"
+                value={produceName}
+                onChange={(e) => setProduceName(e.target.value)}
+                placeholder="e.g. Ratnagiri Alphonso Mango"
+                className="w-full rounded-xl border border-white/20 bg-black/60 px-4 py-3 text-sm font-bold text-white focus:outline-none"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-white/60 block">APPROX SIZE OF PRODUCE</label>
+              <input
+                type="text"
+                value={approxSize}
+                onChange={(e) => setApproxSize(e.target.value)}
+                placeholder="e.g. Approx size of human hand / palm (8-10 cm)"
+                className="w-full rounded-xl border border-white/20 bg-black/60 px-4 py-3 text-sm font-bold text-white focus:outline-none"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-white/60 block">COLOR OF MANGO / PRODUCE</label>
+              <input
+                type="text"
+                value={mangoColor}
+                onChange={(e) => setMangoColor(e.target.value)}
+                placeholder="e.g. Golden yellow with subtle green blush"
+                className="w-full rounded-xl border border-white/20 bg-black/60 px-4 py-3 text-sm font-bold text-white focus:outline-none"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-white/60 block">WHEN WAS IT HARVESTED?</label>
+              <input
+                type="text"
+                value={harvestTiming}
+                onChange={(e) => setHarvestTiming(e.target.value)}
+                placeholder="e.g. Harvested 2 days ago (Morning pick)"
+                className="w-full rounded-xl border border-white/20 bg-black/60 px-4 py-3 text-sm font-bold text-white focus:outline-none"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-white/60 block">FERTILIZERS & CROP INPUTS USED</label>
+              <input
+                type="text"
+                value={fertilizersUsed}
+                onChange={(e) => setFertilizersUsed(e.target.value)}
+                placeholder="e.g. Organic Vermicompost, Neem Cake, Bio-pesticides"
+                className="w-full rounded-xl border border-white/20 bg-black/60 px-4 py-3 text-sm font-bold text-white focus:outline-none"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-white/60 block">BATCH WEIGHT / QUANTITY (KG)</label>
+              <input
+                type="number"
+                value={batchWeightKg}
+                onChange={(e) => setBatchWeightKg(e.target.value)}
+                placeholder="e.g. 500"
+                className="w-full rounded-xl border border-white/20 bg-black/60 px-4 py-3 text-sm font-bold text-white focus:outline-none"
+              />
+            </div>
+
+            <div className="space-y-1.5 md:col-span-2">
+              <label className="text-white/60 block">ORCHARD / LOCATION</label>
+              <input
+                type="text"
+                value={orchardLocation}
+                onChange={(e) => setOrchardLocation(e.target.value)}
+                placeholder="e.g. Ratnagiri, Maharashtra"
+                className="w-full rounded-xl border border-white/20 bg-black/60 px-4 py-3 text-sm font-bold text-white focus:outline-none"
+              />
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between border-t border-white/10 pt-4">
+            <div className="flex items-center space-x-2 text-xs font-mono text-white/50">
+              <Scale className="h-4 w-4 text-emerald-400" />
+              <span>Evaluates visual size, color, harvest freshness, & inputs.</span>
+            </div>
+
+            <button
+              onClick={handleGenerateAssessment}
+              className="inline-flex items-center space-x-2 rounded-2xl bg-white px-8 py-3.5 text-xs font-extrabold text-black shadow-lg hover:bg-white/90 transition-all uppercase active:scale-95"
+            >
+              <Sparkles className="h-4 w-4" />
+              <span>GENERATE QUALITY GRADE & MARKET MATCH</span>
+            </button>
+          </div>
+
+          {/* Generated Result Display */}
+          {assessmentResult && (
+            <div className="mt-6 pt-6 border-t border-white/10 rounded-2xl border border-emerald-500/40 bg-emerald-500/10 p-6 space-y-4 font-mono animate-fade-in">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-emerald-400 uppercase flex items-center gap-1.5">
+                  <Award className="h-4 w-4" />
+                  EVALUATED QUALITY GRADE & PRICE ESTIMATE
+                </span>
+                <span className="rounded-full bg-emerald-500/20 px-3 py-1 text-[10px] font-extrabold text-emerald-300">
+                  {assessmentResult.confidence}% AI CONFIDENCE
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 text-xs">
+                <div className="space-y-1">
+                  <span className="text-white/50 text-[10px] block">GRADE VERDICT</span>
+                  <span className="font-bold text-lg text-emerald-300 font-display">{assessmentResult.grade}</span>
+                </div>
+                <div className="space-y-1">
+                  <span className="text-white/50 text-[10px] block">FRESHNESS RATING</span>
+                  <span className="font-bold text-lg text-white font-display">{assessmentResult.freshnessScore}% Peak Ripeness</span>
+                </div>
+                <div className="space-y-1">
+                  <span className="text-white/50 text-[10px] block">ESTIMATED MARKET PRICE</span>
+                  <span className="font-bold text-lg text-emerald-400 font-display">₹{assessmentResult.estimatedPriceINR} / kg</span>
+                </div>
+                <div className="space-y-1">
+                  <span className="text-white/50 text-[10px] block">RECOMMENDED BUYERS</span>
+                  <span className="font-bold text-xs text-white leading-tight block">{assessmentResult.pathway}</span>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
-        {/* Refined Editorial Comparison Table with Large & Bold Text */}
-        <div className="overflow-x-auto border-t-2 border-white/20 pt-6">
-          <table className="w-full text-left border-collapse">
-            <thead>
-              <tr className="border-b-2 border-white/20">
-                <th className="py-5 pr-6 text-sm font-mono font-black text-white uppercase tracking-widest">
-                  FEATURE
-                </th>
-                {analyzedProducts.map((item, idx) => {
-                  const isBest = idx === bestMatchIndex;
-                  return (
-                    <th key={item.product.id} className="py-5 px-6 min-w-[220px] align-top">
-                      <div className="space-y-1.5">
-                        {isBest ? (
-                          <span className="text-xs font-mono font-black tracking-widest text-emerald-400 uppercase block">
-                            ★ BEST MATCH
-                          </span>
-                        ) : (
-                          <span className="text-xs font-mono text-transparent block">.</span>
-                        )}
-                        <span className="text-xs font-mono font-extrabold text-white/50 uppercase block tracking-wider">
-                          {item.product.brand}
-                        </span>
-                        <h4 className={`font-display text-xl font-black ${isBest ? 'text-white scale-105 origin-left' : 'text-white/90'}`}>
-                          {item.product.name}
-                        </h4>
-                        <button
-                          onClick={() => onSelectProduct(item.product)}
-                          className="inline-flex items-center space-x-1.5 text-xs font-mono font-black text-white/60 hover:text-white transition-colors pt-2 uppercase tracking-wider"
-                        >
-                          <span>VIEW DETAILS</span>
-                          <ArrowUpRight className="h-4 w-4" />
-                        </button>
+        {/* SECTION 2: PRODUCE BATCH COMPARISON TABLE */}
+        <div className="space-y-6">
+          <div className="flex items-center justify-between border-b border-white/10 pb-3">
+            <h3 className="font-display text-2xl font-black text-white uppercase">
+              COMPARE PRODUCE CROPS SIDE-BY-SIDE
+            </h3>
+            <span className="text-xs font-mono text-white/40">SELECT UP TO 3 PRODUCE BATCHES</span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {[0, 1].map((slotIdx) => (
+              <div key={slotIdx} className="space-y-2">
+                <span className="text-xs font-mono font-extrabold text-white/60 block tracking-widest uppercase">
+                  PRODUCE CROP 0{slotIdx + 1}
+                </span>
+                <select
+                  value={selectedProductIds[slotIdx] || ''}
+                  onChange={(e) => handleToggleProduct(e.target.value, slotIdx)}
+                  className="w-full rounded-xl border-2 border-white/20 bg-[#0B0B0F] px-4 py-3.5 text-sm font-extrabold text-white focus:border-white focus:outline-none transition-colors shadow-lg"
+                >
+                  {MOCK_PRODUCTS.map((p) => (
+                    <option key={p.id} value={p.id} className="bg-[#0B0B0F] font-bold">
+                      {p.brand} — {p.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            ))}
+          </div>
+
+          <div className="overflow-x-auto border-t-2 border-white/20 pt-6">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="border-b-2 border-white/20">
+                  <th className="py-5 pr-6 text-sm font-mono font-black text-white uppercase tracking-widest">
+                    PRODUCE PARAMETER
+                  </th>
+                  {analyzedProducts.map((p) => (
+                    <th key={p.id} className="py-5 px-6 min-w-[220px] align-top">
+                      <div className="space-y-1">
+                        <span className="text-xs font-mono text-white/50 block">{p.brand}</span>
+                        <h4 className="font-display text-xl font-black uppercase text-white">{p.name}</h4>
                       </div>
                     </th>
-                  );
-                })}
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-white/10 text-sm font-sans">
-              {/* Row 1: Personal Compatibility */}
-              <tr>
-                <td className="py-5 pr-6 text-sm font-mono font-black text-white/80 uppercase tracking-wider">
-                  PERSONAL COMPATIBILITY
-                </td>
-                {analyzedProducts.map((item, idx) => {
-                  const isBest = idx === bestMatchIndex;
-                  return (
-                    <td key={item.product.id} className="py-5 px-6">
-                      <span
-                        className={`font-black tracking-wider uppercase ${
-                          item.analysis.overallStatus === 'NOT_RECOMMENDED'
-                            ? 'text-red-400 text-base md:text-lg'
-                            : item.analysis.overallStatus === 'CAUTION'
-                            ? 'text-amber-400 text-base md:text-lg'
-                            : 'text-emerald-400 text-base md:text-lg'
-                        } ${isBest ? 'font-black scale-105 origin-left block' : ''}`}
-                      >
-                        {item.analysis.overallStatus === 'NOT_RECOMMENDED'
-                          ? '🔴 CONFLICT'
-                          : item.analysis.overallStatus === 'CAUTION'
-                          ? '🟡 CAUTION'
-                          : '🟢 GOOD MATCH'}
-                      </span>
+                  ))}
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-white/10 font-mono">
+                <tr>
+                  <td className="py-5 pr-6 text-sm font-black text-white/80 uppercase">ORIGIN REGION</td>
+                  {analyzedProducts.map((p) => (
+                    <td key={p.id} className="py-5 px-6 text-sm font-bold text-white">
+                      {p.agriData?.originRegion || 'Indian Ag Belt'}
                     </td>
-                  );
-                })}
-              </tr>
-
-              {/* Row 1b: Quality Grade */}
-              <tr>
-                <td className="py-5 pr-6 text-sm font-mono font-black text-white/80 uppercase tracking-wider">
-                  QUALITY GRADE
-                </td>
-                {analyzedProducts.map((item) => (
-                  <td key={item.product.id} className="py-5 px-6 font-mono text-sm font-extrabold text-amber-300">
-                    {item.product.agriData?.estimatedGrade || 'Commercial Standard'}
-                  </td>
-                ))}
-              </tr>
-
-              {/* Row 1c: Processing Suitability */}
-              <tr>
-                <td className="py-5 pr-6 text-sm font-mono font-black text-white/80 uppercase tracking-wider">
-                  PROCESSING SUITABILITY
-                </td>
-                {analyzedProducts.map((item) => (
-                  <td key={item.product.id} className="py-5 px-6 text-xs font-bold text-white/90 leading-relaxed">
-                    {item.product.agriData?.processingSuitability || 'Ready to Consume / Direct Retail'}
-                  </td>
-                ))}
-              </tr>
-
-              {/* Row 2: Allergens */}
-              <tr>
-                <td className="py-5 pr-6 text-sm font-mono font-black text-white/80 uppercase tracking-wider">
-                  ALLERGENS
-                </td>
-                {analyzedProducts.map((item) => (
-                  <td key={item.product.id} className="py-5 px-6 text-base font-extrabold text-white">
-                    {item.product.ingredients
-                      .filter((i) => i.category === 'Allergen')
-                      .map((i) => i.name)
-                      .join(', ') || 'None'}
-                  </td>
-                ))}
-              </tr>
-
-              {/* Row 3: Conflicts */}
-              <tr>
-                <td className="py-5 pr-6 text-sm font-mono font-black text-white/80 uppercase tracking-wider">
-                  CONFLICTS
-                </td>
-                {analyzedProducts.map((item) => (
-                  <td key={item.product.id} className="py-5 px-6">
-                    {item.analysis.conflictsCount > 0 ? (
-                      <span className="text-red-400 text-base font-black tracking-wider">
-                        {item.analysis.conflictsCount} Flagged
-                      </span>
-                    ) : (
-                      <span className="text-white/50 text-base font-extrabold">0</span>
-                    )}
-                  </td>
-                ))}
-              </tr>
-
-              {/* Row 4: Sugar */}
-              <tr>
-                <td className="py-5 pr-6 text-sm font-mono font-black text-white/80 uppercase tracking-wider">
-                  SUGAR
-                </td>
-                {analyzedProducts.map((item) => (
-                  <td key={item.product.id} className="py-5 px-6 text-lg font-black text-white">
-                    {item.product.nutrition.sugar} g
-                  </td>
-                ))}
-              </tr>
-
-              {/* Row 5: Calories */}
-              <tr>
-                <td className="py-5 pr-6 text-sm font-mono font-black text-white/80 uppercase tracking-wider">
-                  CALORIES
-                </td>
-                {analyzedProducts.map((item) => (
-                  <td key={item.product.id} className="py-5 px-6 text-lg font-black text-white">
-                    {item.product.nutrition.calories} kcal
-                  </td>
-                ))}
-              </tr>
-
-              {/* Row 6: Protein */}
-              <tr>
-                <td className="py-5 pr-6 text-sm font-mono font-black text-white/80 uppercase tracking-wider">
-                  PROTEIN
-                </td>
-                {analyzedProducts.map((item) => (
-                  <td key={item.product.id} className="py-5 px-6 text-lg font-black text-emerald-400">
-                    {item.product.nutrition.protein} g
-                  </td>
-                ))}
-              </tr>
-
-              {/* Row 7: Sodium */}
-              <tr>
-                <td className="py-5 pr-6 text-sm font-mono font-black text-white/80 uppercase tracking-wider">
-                  SODIUM
-                </td>
-                {analyzedProducts.map((item) => (
-                  <td key={item.product.id} className="py-5 px-6 text-lg font-black text-white">
-                    {item.product.nutrition.sodium} mg
-                  </td>
-                ))}
-              </tr>
-
-              {/* Row 8: Key Ingredients */}
-              <tr>
-                <td className="py-5 pr-6 text-sm font-mono font-black text-white/80 uppercase tracking-wider">
-                  KEY INGREDIENTS
-                </td>
-                {analyzedProducts.map((item) => (
-                  <td key={item.product.id} className="py-5 px-6 text-sm font-extrabold text-white/90 leading-relaxed">
-                    {item.product.ingredients.slice(0, 4).map((i) => i.name).join(' · ')}
-                  </td>
-                ))}
-              </tr>
-            </tbody>
-          </table>
+                  ))}
+                </tr>
+                <tr>
+                  <td className="py-5 pr-6 text-sm font-black text-white/80 uppercase">QUALITY GRADE</td>
+                  {analyzedProducts.map((p) => (
+                    <td key={p.id} className="py-5 px-6 text-sm font-bold text-amber-300">
+                      {p.agriData?.estimatedGrade || 'Grade A'}
+                    </td>
+                  ))}
+                </tr>
+                <tr>
+                  <td className="py-5 pr-6 text-sm font-black text-white/80 uppercase">FRESHNESS INDICATOR</td>
+                  {analyzedProducts.map((p) => (
+                    <td key={p.id} className="py-5 px-6 text-sm font-bold text-emerald-400">
+                      {p.agriData?.freshnessIndicator || 'Fresh Harvest'}
+                    </td>
+                  ))}
+                </tr>
+                <tr>
+                  <td className="py-5 pr-6 text-sm font-black text-white/80 uppercase">PROCESSING SUITABILITY</td>
+                  {analyzedProducts.map((p) => (
+                    <td key={p.id} className="py-5 px-6 text-xs font-bold text-white/90 leading-relaxed">
+                      {p.agriData?.processingSuitability}
+                    </td>
+                  ))}
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
