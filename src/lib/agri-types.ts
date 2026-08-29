@@ -71,6 +71,45 @@ export interface BuyerRecord {
   buyingPricePerKg?: number; // in INR
 }
 
+export type UserRole = 'FARMER' | 'BUYER';
+
+export interface BuyerProfile {
+  id: string;
+  companyName: string;
+  contactPerson: string;
+  buyerType: BuyerType;
+  villageOrLocality: string;
+  district: string;
+  state: string;
+  procurementRadiusKm: number;
+  targetCrops: string[];
+  qualitySpecification: string;
+  minQtyKg: number;
+  maxQtyKg: number;
+  buyingPricePerKgINR: number;
+  verified: boolean;
+  phone: string;
+  email: string;
+}
+
+export type OrderStatus = 'PENDING' | 'ACCEPTED' | 'REJECTED' | 'DELIVERED';
+
+export interface PurchaseOrder {
+  id: string;
+  cropId: string;
+  cropName: string;
+  farmerName: string;
+  farmerLocation: string;
+  buyerName: string;
+  buyerType: BuyerType;
+  quantityKg: number;
+  offeredPricePerKg: number;
+  totalAmountINR: number;
+  status: OrderStatus;
+  orderDate: string;
+  deliveryDate: string;
+}
+
 export interface MatchResult {
   buyer: BuyerRecord;
   crop: CropItem;

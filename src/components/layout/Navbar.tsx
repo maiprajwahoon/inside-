@@ -10,7 +10,7 @@ interface NavbarProps {
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ activeTab, onNavigate }) => {
-  const { userProfile } = useProfile();
+  const { userProfile, userRole, setUserRole } = useProfile();
   const ruleCount = userProfile.allergies.length + userProfile.diets.length + userProfile.avoidIngredients.length;
 
   const navItems: { id: ActiveTab; label: string; icon: React.ReactNode }[] = [
@@ -56,17 +56,34 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, onNavigate }) => {
         </nav>
 
         {/* Right Pinned Profile Button (ALWAYS Visible on Mobile & PC) */}
-        <button
-          onClick={() => onNavigate('profile')}
-          className={`flex items-center space-x-1.5 sm:space-x-2 rounded-full border px-3 sm:px-4 py-1.5 sm:py-2 text-xs font-black tracking-wider uppercase transition-all shrink-0 ${
-            activeTab === 'profile'
-              ? 'border-white bg-white text-black font-extrabold'
-              : 'border-white/20 bg-white/10 text-white hover:border-white/40 hover:bg-white/20'
-          }`}
-        >
-          <User className="h-3.5 w-3.5" />
-          <span>PROFILE ({ruleCount})</span>
-        </button>
+        <div className="flex items-center space-x-2 shrink-0">
+          <button
+            onClick={() => {
+              const nextRole = userRole === 'FARMER' ? 'BUYER' : 'FARMER';
+              setUserRole(nextRole);
+            }}
+            className={`hidden sm:flex items-center space-x-1.5 rounded-full border px-3 py-1.5 text-[10px] font-mono font-extrabold uppercase transition-all ${
+              userRole === 'FARMER'
+                ? 'border-emerald-500/40 bg-emerald-500/10 text-emerald-400'
+                : 'border-blue-500/40 bg-blue-500/10 text-blue-300'
+            }`}
+            title="Click to switch role (Farmer vs Buyer)"
+          >
+            <span>{userRole === 'FARMER' ? '👨‍🌾 FARMER' : '🏢 BUYER'}</span>
+          </button>
+
+          <button
+            onClick={() => onNavigate('profile')}
+            className={`flex items-center space-x-1.5 sm:space-x-2 rounded-full border px-3 sm:px-4 py-1.5 sm:py-2 text-xs font-black tracking-wider uppercase transition-all ${
+              activeTab === 'profile'
+                ? 'border-white bg-white text-black font-extrabold'
+                : 'border-white/20 bg-white/10 text-white hover:border-white/40 hover:bg-white/20'
+            }`}
+          >
+            <User className="h-3.5 w-3.5" />
+            <span>PROFILE ({ruleCount})</span>
+          </button>
+        </div>
       </div>
 
       {/* Dedicated Mobile Quick Nav Bar (Only visible on mobile screens < 768px) */}

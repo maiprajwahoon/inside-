@@ -1,4 +1,4 @@
-import type { BuyerRecord, FarmerProfile } from './agri-types';
+import type { BuyerRecord, FarmerProfile, BuyerProfile, PurchaseOrder } from './agri-types';
 
 export const INITIAL_FARMER_PROFILE: FarmerProfile = {
   id: 'farmer-01',
@@ -177,5 +177,57 @@ export const MOCK_BUYERS: BuyerRecord[] = [
     contactPhone: '+91 2554 221009',
     contactEmail: 'apmc@pimpalgaon.gov.in',
     buyingPricePerKg: 20,
+  },
+];
+
+export const INITIAL_BUYER_PROFILE: BuyerProfile = {
+  id: 'buyer-user-01',
+  companyName: 'Sahyadri Farmers Producer Co.',
+  contactPerson: 'Vikram Shinde (Procurement Officer)',
+  buyerType: 'Food Processor',
+  villageOrLocality: 'Mohadi, Dindori',
+  district: 'Nashik',
+  state: 'Maharashtra',
+  procurementRadiusKm: 60,
+  targetCrops: ['Spinach (Palak)', 'Desi Tomato', 'Alphonso Mango', 'Sona Masoori Rice'],
+  qualitySpecification: 'Grade A Freshness, Low Residue, High Brix/Soluble Solids',
+  minQtyKg: 100,
+  maxQtyKg: 5000,
+  buyingPricePerKgINR: 24,
+  verified: true,
+  phone: '+91 2557 234500',
+  email: 'procure@sahyadrifoods.com',
+};
+
+export const INITIAL_PURCHASE_ORDERS: PurchaseOrder[] = [
+  {
+    id: 'po-101',
+    cropId: 'crop-01',
+    cropName: 'Spinach (Palak)',
+    farmerName: 'Ramesh Patel',
+    farmerLocation: 'Pimpalgaon Baswant, Nashik',
+    buyerName: 'Sahyadri Farmers Producer Co.',
+    buyerType: 'Food Processor',
+    quantityKg: 200,
+    offeredPricePerKg: 24,
+    totalAmountINR: 4800,
+    status: 'PENDING',
+    orderDate: '2026-08-29',
+    deliveryDate: '2026-08-30',
+  },
+  {
+    id: 'po-102',
+    cropId: 'crop-02',
+    cropName: 'Desi Tomato',
+    farmerName: 'Ramesh Patel',
+    farmerLocation: 'Pimpalgaon Baswant, Nashik',
+    buyerName: 'MahaTomato Pulp Unit',
+    buyerType: 'Food Processor',
+    quantityKg: 1000,
+    offeredPricePerKg: 18,
+    totalAmountINR: 18000,
+    status: 'ACCEPTED',
+    orderDate: '2026-08-28',
+    deliveryDate: '2026-09-02',
   },
 ];
