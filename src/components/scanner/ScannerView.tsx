@@ -15,7 +15,10 @@ export const ScannerView: React.FC<ScannerViewProps> = ({ onSelectProduct }) => 
   const sampleProducts = MOCK_PRODUCTS.slice(0, 6);
   const activeSample = sampleProducts[selectedProductIndex];
 
+  const [lowQualityWarning, setLowQualityWarning] = useState(false);
+
   const handleCapture = () => {
+    setLowQualityWarning(false);
     setIsScanning(true);
     setScanPhase(1);
 
@@ -29,18 +32,36 @@ export const ScannerView: React.FC<ScannerViewProps> = ({ onSelectProduct }) => 
     }, 2800);
   };
 
+  const handleSimulateLowQuality = () => {
+    setIsScanning(true);
+    setScanPhase(1);
+    setTimeout(() => {
+      setIsScanning(false);
+      setLowQualityWarning(true);
+    }, 1200);
+  };
+
   return (
     <div className="min-h-screen bg-[#060608] py-16 px-6 md:px-16 text-white">
       <div className="mx-auto max-w-4xl space-y-10">
         {/* Clean Header without pill badge */}
         <div className="flex flex-col items-center text-center space-y-3">
           <h1 className="font-display text-4xl font-extrabold tracking-tight sm:text-5xl uppercase">
-            SCAN INGREDIENT LABEL
+            SCAN PRODUCE OR FOOD LABEL
           </h1>
           <p className="max-w-md text-sm font-bold text-white/60">
-            Position any food package ingredient panel within the camera frame below to initiate instant profile analysis.
+            Position any farm produce, crop harvest, or food package ingredient panel within the camera frame below for instant AI quality assessment.
           </p>
         </div>
+
+        {/* Responsible AI Low Quality Warning Alert Banner */}
+        {lowQualityWarning && (
+          <div className="mx-auto max-w-2xl rounded-2xl border border-amber-500/40 bg-amber-500/10 p-5 text-amber-300 text-center space-y-2">
+            <p className="text-sm font-extrabold tracking-wide">
+              ⚠️ Image quality is insufficient for a reliable assessment. Please retake the image in better lighting.
+            </p>
+          </div>
+        )}
 
         <div className="relative mx-auto max-w-2xl overflow-hidden rounded-3xl border border-white/20 bg-[#0A0A0F] shadow-2xl">
           <div className="relative aspect-[4/3] w-full overflow-hidden bg-gradient-to-b from-[#121218] to-[#08080C]">
@@ -56,17 +77,19 @@ export const ScannerView: React.FC<ScannerViewProps> = ({ onSelectProduct }) => 
             </div>
 
             <div className="absolute inset-0 flex flex-col items-center justify-center p-12 text-center">
-              <div className="w-64 rounded-xl border border-white/15 bg-white/[0.04] p-5 backdrop-blur-md space-y-3 shadow-2xl">
+              <div className="w-72 rounded-xl border border-white/15 bg-white/[0.04] p-5 backdrop-blur-md space-y-3 shadow-2xl">
                 <div className="flex items-center justify-between border-b border-white/10 pb-2">
                   <span className="text-[10px] font-bold text-white/60 uppercase">
-                    {activeSample.brand} — INGREDIENTS
+                    {activeSample.brand} — {activeSample.agriData?.isAgriProduce ? 'CROP SAMPLE' : 'LABEL'}
                   </span>
                   <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
                 </div>
                 <div className="text-left space-y-1">
                   <p className="text-xs font-bold text-white">{activeSample.name}</p>
-                  <p className="text-[10px] text-white/50 line-clamp-3">
-                    INGREDIENTS: {activeSample.ingredients.map((i) => i.name).join(', ')}
+                  <p className="text-[10px] text-white/60 line-clamp-2">
+                    {activeSample.agriData?.isAgriProduce
+                      ? `GRADE: ${activeSample.agriData.estimatedGrade} · ${activeSample.agriData.originRegion}`
+                      : `INGREDIENTS: ${activeSample.ingredients.map((i) => i.name).join(', ')}`}
                   </p>
                 </div>
               </div>
@@ -86,18 +109,18 @@ export const ScannerView: React.FC<ScannerViewProps> = ({ onSelectProduct }) => 
 
                 <div className="space-y-2 text-center">
                   <div className="text-xs font-mono font-bold tracking-widest text-emerald-400 uppercase">
-                    {scanPhase === 1 && 'READING LABEL...'}
-                    {scanPhase === 2 && 'IDENTIFYING INGREDIENTS...'}
-                    {scanPhase === 3 && 'CHECKING YOUR PROFILE...'}
-                    {scanPhase === 4 && 'ANALYZING PRODUCT...'}
+                    {scanPhase === 1 && 'VERIFYING IMAGE QUALITY...'}
+                    {scanPhase === 2 && 'DETECTING VISUAL FEATURES...'}
+                    {scanPhase === 3 && 'ESTIMATING GRADE & SUITABILITY...'}
+                    {scanPhase === 4 && 'EVALUATING COMPATIBILITY...'}
                   </div>
 
                   <div className="flex items-center justify-center space-x-2 text-[10px] text-white/50">
-                    <span className={scanPhase >= 1 ? 'text-emerald-400 font-bold' : ''}>1. OCR</span>
+                    <span className={scanPhase >= 1 ? 'text-emerald-400 font-bold' : ''}>1. QUALITY CHECK</span>
                     <span>➔</span>
                     <span className={scanPhase >= 2 ? 'text-emerald-400 font-bold' : ''}>2. EXTRACT</span>
                     <span>➔</span>
-                    <span className={scanPhase >= 3 ? 'text-emerald-400 font-bold' : ''}>3. MATCH</span>
+                    <span className={scanPhase >= 3 ? 'text-emerald-400 font-bold' : ''}>3. GRADE</span>
                     <span>➔</span>
                     <span className={scanPhase >= 4 ? 'text-emerald-400 font-bold' : ''}>4. EVAL</span>
                   </div>
@@ -113,7 +136,10 @@ export const ScannerView: React.FC<ScannerViewProps> = ({ onSelectProduct }) => 
                 {sampleProducts.map((p, idx) => (
                   <button
                     key={p.id}
-                    onClick={() => setSelectedProductIndex(idx)}
+                    onClick={() => {
+                      setLowQualityWarning(false);
+                      setSelectedProductIndex(idx);
+                    }}
                     className={`h-7 w-7 rounded-lg border text-[10px] font-bold transition-all ${
                       selectedProductIndex === idx
                         ? 'border-white bg-white text-black'
@@ -123,6 +149,13 @@ export const ScannerView: React.FC<ScannerViewProps> = ({ onSelectProduct }) => 
                     {idx + 1}
                   </button>
                 ))}
+                <button
+                  onClick={handleSimulateLowQuality}
+                  className="h-7 px-2 rounded-lg border border-amber-500/40 bg-amber-500/10 text-[9px] font-mono text-amber-300 font-bold hover:bg-amber-500/20 transition-all uppercase"
+                  title="Simulate low light scan quality check"
+                >
+                  LOW LIGHT TEST
+                </button>
               </div>
             </div>
 

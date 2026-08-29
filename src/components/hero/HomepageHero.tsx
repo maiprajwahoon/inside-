@@ -81,7 +81,7 @@ export const HomepageHero: React.FC<HomepageHeroProps> = ({ onNavigate }) => {
               <BrandLogo size="hero" showDot />
             </motion.div>
 
-            {/* Apple-Style Line 2: SCAN YOUR FOOD. */}
+            {/* Apple-Style Line 2: FROM FARM TO CONSUMER. */}
             <motion.div
               initial={{ opacity: 0.2, y: 35, scale: 0.95 }}
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
@@ -90,11 +90,11 @@ export const HomepageHero: React.FC<HomepageHeroProps> = ({ onNavigate }) => {
               className="select-none"
             >
               <h2 className="font-display text-2xl font-extrabold tracking-tight text-white/70 sm:text-5xl md:text-6xl uppercase leading-none">
-                SCAN YOUR FOOD.
+                FROM FARM TO CONSUMER.
               </h2>
             </motion.div>
 
-            {/* Apple-Style Line 3: KNOW IF IT FITS YOU. */}
+            {/* Apple-Style Line 3: KNOW WHAT'S INSIDE. */}
             <motion.div
               initial={{ opacity: 0.2, y: 35, scale: 0.95 }}
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
@@ -103,11 +103,11 @@ export const HomepageHero: React.FC<HomepageHeroProps> = ({ onNavigate }) => {
               className="select-none"
             >
               <h2 className="font-display text-2xl font-extrabold tracking-tight bg-gradient-to-r from-white via-white/90 to-white/50 bg-clip-text text-transparent sm:text-5xl md:text-6xl uppercase leading-none">
-                KNOW IF IT FITS YOU.
+                KNOW WHAT'S INSIDE.
               </h2>
             </motion.div>
 
-            {/* Apple-Style Paragraph: Understand ingredients... */}
+            {/* Apple-Style Paragraph: AI-powered intelligence... */}
             <motion.div
               initial={{ opacity: 0.2, y: 25, scale: 0.97 }}
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
@@ -116,7 +116,7 @@ export const HomepageHero: React.FC<HomepageHeroProps> = ({ onNavigate }) => {
               className="select-none max-w-2xl px-2"
             >
               <p className="text-sm font-bold text-white/70 sm:text-lg md:text-xl leading-relaxed">
-                Understand ingredients and discover whether a product fits your personal food profile in real-time.
+                AI-powered intelligence connecting agricultural produce, food processing, quality assessment, and nutritional transparency in real-time.
               </p>
             </motion.div>
 

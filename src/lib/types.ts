@@ -1,4 +1,7 @@
 export type Category = 
+  | 'Fresh Produce'
+  | 'Grains & Pulses'
+  | 'Spices & Cash Crops'
   | 'Chocolate'
   | 'Cereal'
   | 'Protein Bar'
@@ -50,6 +53,17 @@ export interface ProductPosition {
   depth: number;
 }
 
+export interface AgriQualityData {
+  isAgriProduce?: boolean;
+  originRegion?: string;
+  visualQuality?: string;
+  visibleDefects?: string;
+  estimatedGrade?: string;
+  freshnessIndicator?: string;
+  processingSuitability?: string;
+  confidenceScore?: number;
+}
+
 export interface Product {
   id: string;
   name: string;
@@ -60,6 +74,7 @@ export interface Product {
   nutrition: ProductNutrition;
   packageStyle: PackageStyle;
   position: ProductPosition;
+  agriData?: AgriQualityData;
   isPopular?: boolean;
 }
 

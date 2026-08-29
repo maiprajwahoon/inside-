@@ -59,7 +59,7 @@ export const CompareView: React.FC<CompareViewProps> = ({ onSelectProduct }) => 
             COMPARE
           </h1>
           <p className="text-base font-bold text-white/70">
-            Choose up to three products and see which fits your profile best.
+            Choose up to three agricultural produce items or food products to compare quality grade, processing suitability, and profile fit.
           </p>
         </div>
 
@@ -152,6 +152,30 @@ export const CompareView: React.FC<CompareViewProps> = ({ onSelectProduct }) => 
                     </td>
                   );
                 })}
+              </tr>
+
+              {/* Row 1b: Quality Grade */}
+              <tr>
+                <td className="py-5 pr-6 text-sm font-mono font-black text-white/80 uppercase tracking-wider">
+                  QUALITY GRADE
+                </td>
+                {analyzedProducts.map((item) => (
+                  <td key={item.product.id} className="py-5 px-6 font-mono text-sm font-extrabold text-amber-300">
+                    {item.product.agriData?.estimatedGrade || 'Commercial Standard'}
+                  </td>
+                ))}
+              </tr>
+
+              {/* Row 1c: Processing Suitability */}
+              <tr>
+                <td className="py-5 pr-6 text-sm font-mono font-black text-white/80 uppercase tracking-wider">
+                  PROCESSING SUITABILITY
+                </td>
+                {analyzedProducts.map((item) => (
+                  <td key={item.product.id} className="py-5 px-6 text-xs font-bold text-white/90 leading-relaxed">
+                    {item.product.agriData?.processingSuitability || 'Ready to Consume / Direct Retail'}
+                  </td>
+                ))}
               </tr>
 
               {/* Row 2: Allergens */}

@@ -16,14 +16,14 @@ export const SearchView: React.FC<SearchViewProps> = ({ onSelectProduct }) => {
   const [isFocused, setIsFocused] = useState(false);
 
   const popularSuggestions = [
-    'Peanut Butter',
-    "Haldiram's Bhujia",
-    "Lay's Classic",
-    'Bikaji Bikaneri Bhujia',
-    'Maggi 2-Minute Noodles',
-    'Amul Taaza',
-    'Parle-G',
-    'Oreo',
+    'Alphonso Mango',
+    'Desi Tomato',
+    'Sona Masoori Rice',
+    'Sharbati Wheat',
+    'Nashik Red Onion',
+    "Haldiram's Aloo Bhujia",
+    'Amul Taaza Milk',
+    'Paper Boat Raw Mango',
   ];
 
   const filteredProducts = useMemo(() => {
@@ -33,7 +33,7 @@ export const SearchView: React.FC<SearchViewProps> = ({ onSelectProduct }) => {
     const tokens = q.split(/\s+/).filter(Boolean);
 
     return MOCK_PRODUCTS.filter((product) => {
-      const fullProductText = `${product.brand} ${product.name} ${product.category} ${product.subtitle} ${product.ingredients
+      const fullProductText = `${product.brand} ${product.name} ${product.category} ${product.subtitle} ${product.agriData?.originRegion || ''} ${product.agriData?.estimatedGrade || ''} ${product.agriData?.processingSuitability || ''} ${product.ingredients
         .map((i) => `${i.name} ${i.description} ${i.purpose}`)
         .join(' ')}`.toLowerCase();
 
@@ -47,10 +47,10 @@ export const SearchView: React.FC<SearchViewProps> = ({ onSelectProduct }) => {
         {/* Header */}
         <div className="text-center space-y-3">
           <h1 className="font-display text-4xl font-black tracking-tight sm:text-6xl uppercase text-white">
-            WHAT ARE YOU EATING?
+            WHAT ARE YOU ANALYZING?
           </h1>
           <p className="text-sm font-bold text-white/60 max-w-md mx-auto">
-            Search any food item, brand or ingredient to evaluate compatibility against your active profile.
+            Search any agricultural produce, crop sample, ingredient or food product to evaluate quality grade, processing suitability, and profile compatibility.
           </p>
         </div>
 
@@ -70,7 +70,7 @@ export const SearchView: React.FC<SearchViewProps> = ({ onSelectProduct }) => {
               onChange={(e) => setQuery(e.target.value)}
               onFocus={() => setIsFocused(true)}
               onBlur={() => setTimeout(() => setIsFocused(false), 200)}
-              placeholder="Search a product, food or ingredient..."
+              placeholder="Analyze a mango, check tomato quality, search rice..."
               className="w-full bg-transparent font-sans text-base font-bold text-white placeholder-white/40 focus:outline-none"
             />
             {query && (

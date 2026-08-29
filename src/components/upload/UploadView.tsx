@@ -26,10 +26,10 @@ export const UploadView: React.FC<UploadViewProps> = ({ onSelectProduct }) => {
         {/* Clean Header without pill badge */}
         <div className="flex flex-col items-center text-center space-y-3">
           <h1 className="font-display text-4xl font-extrabold tracking-tight sm:text-5xl uppercase">
-            UPLOAD FOOD LABEL IMAGE
+            UPLOAD PRODUCE OR FOOD LABEL IMAGE
           </h1>
           <p className="max-w-md text-sm font-bold text-white/60">
-            Upload a photo of an ingredient panel or nutrition facts label for automated profile matching.
+            Upload a photo of agricultural produce, farm harvest, or food label for automated AI-assisted quality assessment.
           </p>
         </div>
 
@@ -55,13 +55,13 @@ export const UploadView: React.FC<UploadViewProps> = ({ onSelectProduct }) => {
             </div>
 
             <div className="space-y-1">
-              <p className="text-base font-bold text-white">Drag and drop ingredient label image here</p>
+              <p className="text-base font-bold text-white">Drag and drop agricultural produce or food label image here</p>
               <p className="text-xs text-white/40">PNG, JPG, WEBP up to 10MB</p>
             </div>
 
             <div className="pt-4 border-t border-white/10">
               <span className="text-[10px] font-bold text-white/50 uppercase tracking-widest block mb-3">
-                OR CHOOSE A SAMPLE LABEL IMAGE
+                OR CHOOSE A SAMPLE TARGET IMAGE
               </span>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {MOCK_PRODUCTS.slice(0, 4).map((p) => (

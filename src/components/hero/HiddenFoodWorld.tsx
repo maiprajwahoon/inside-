@@ -139,19 +139,32 @@ export const HiddenFoodWorld: React.FC<HiddenFoodWorldProps> = ({ mouseX, mouseY
 
                 <div className="mt-2 rounded-xl border border-white/15 bg-black/80 p-2.5 backdrop-blur-md">
                   <div className="mb-1 flex items-center justify-between text-[9px] font-bold tracking-widest text-white/90 uppercase">
-                    <span>INGREDIENTS</span>
+                    <span>{product.agriData?.isAgriProduce ? 'AGRI INTELLIGENCE' : 'INGREDIENTS'}</span>
                     <Sparkles className="h-2.5 w-2.5 text-emerald-400" />
                   </div>
-                  <div className="flex flex-wrap gap-1">
-                    {product.ingredients.slice(0, 4).map((ing) => (
-                      <span
-                        key={ing.id}
-                        className="rounded bg-white/15 px-1.5 py-0.5 text-[9px] font-medium text-white/90"
-                      >
-                        {ing.name}
-                      </span>
-                    ))}
-                  </div>
+                  {product.agriData?.isAgriProduce ? (
+                    <div className="space-y-1 text-[9px] font-mono text-white/80">
+                      <div className="flex justify-between">
+                        <span className="text-white/50">GRADE:</span>
+                        <span className="font-bold text-amber-300">{product.agriData.estimatedGrade}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-white/50">FRESHNESS:</span>
+                        <span className="font-bold text-emerald-400">{product.agriData.freshnessIndicator}</span>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex flex-wrap gap-1">
+                      {product.ingredients.slice(0, 4).map((ing) => (
+                        <span
+                          key={ing.id}
+                          className="rounded bg-white/15 px-1.5 py-0.5 text-[9px] font-medium text-white/90"
+                        >
+                          {ing.name}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

@@ -75,6 +75,51 @@ export const AnalysisResultView: React.FC<AnalysisResultViewProps> = ({ product,
               </div>
             )}
           </div>
+
+          {/* Agricultural Quality Intelligence Block (If Agri Produce) */}
+          {product.agriData && (
+            <div className="mt-6 pt-6 border-t border-white/10 space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-mono font-bold tracking-widest text-emerald-400 uppercase">
+                  🌾 AGRICULTURAL PRODUCE QUALITY INTELLIGENCE
+                </span>
+                <span className="rounded-full bg-emerald-500/10 border border-emerald-500/30 px-3 py-1 text-[10px] font-mono font-extrabold text-emerald-400 uppercase">
+                  AI-ASSISTED ESTIMATE ({product.agriData.confidenceScore || 96}% CONFIDENCE)
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 rounded-xl border border-white/15 bg-[#0A0A0F] p-5">
+                <div className="space-y-1">
+                  <span className="text-[10px] font-mono text-white/40 block uppercase">ORIGIN REGION</span>
+                  <p className="text-sm font-extrabold text-white">{product.agriData.originRegion || 'Indian Agricultural Belt'}</p>
+                </div>
+
+                <div className="space-y-1">
+                  <span className="text-[10px] font-mono text-white/40 block uppercase">ESTIMATED GRADE</span>
+                  <p className="text-sm font-extrabold text-amber-300">{product.agriData.estimatedGrade}</p>
+                </div>
+
+                <div className="space-y-1">
+                  <span className="text-[10px] font-mono text-white/40 block uppercase">FRESHNESS INDICATOR</span>
+                  <p className="text-sm font-extrabold text-emerald-400">{product.agriData.freshnessIndicator}</p>
+                </div>
+
+                <div className="space-y-1">
+                  <span className="text-[10px] font-mono text-white/40 block uppercase">VISIBLE DEFECTS</span>
+                  <p className="text-sm font-extrabold text-white/80">{product.agriData.visibleDefects}</p>
+                </div>
+
+                <div className="sm:col-span-2 space-y-1 pt-2 border-t border-white/10">
+                  <span className="text-[10px] font-mono text-white/40 block uppercase">PROCESSING SUITABILITY</span>
+                  <p className="text-xs font-bold text-white/90 leading-relaxed">{product.agriData.processingSuitability}</p>
+                </div>
+              </div>
+
+              <p className="text-[11px] font-mono text-white/40 italic">
+                * Note: Quality metrics are AI-assisted estimates based on visible surface features. Certified lab testing is recommended for exact chemical or internal composition.
+              </p>
+            </div>
+          )}
         </div>
 
         {/* Why Flagged Diagram */}

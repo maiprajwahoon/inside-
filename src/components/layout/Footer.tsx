@@ -14,7 +14,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         <div className="flex flex-col items-center md:items-start space-y-2 max-w-md text-center md:text-left">
           <BrandLogo size="md" onClick={() => onNavigate('home')} />
           <p className="text-sm font-bold leading-relaxed text-white/90">
-            We just think you deserve to know exactly what’s in your food, without any of the confusing jargon or fear-mongering. We're here to make sense of the science so you can eat with confidence.
+            Connecting agricultural produce, food processing, quality intelligence, and consumer transparency without confusing jargon. From farm to food, know what’s inside.
           </p>
         </div>
 
