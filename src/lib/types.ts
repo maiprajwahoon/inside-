@@ -106,4 +106,4 @@ export interface AnalysisResult {
   compatibleCount: number;
 }
 
-export type ActiveTab = 'home' | 'scan' | 'upload' | 'search' | 'compare' | 'profile' | 'onboarding' | 'product-detail';
+export type ActiveTab = 'home' | 'scan' | 'upload' | 'search' | 'compare' | 'profile' | 'onboarding' | 'product-detail' | 'farm' | 'marketplace' | 'network' | 'insights';

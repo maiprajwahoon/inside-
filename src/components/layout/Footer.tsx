@@ -20,6 +20,18 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
 
         {/* Quick Links */}
         <div className="flex flex-wrap justify-center gap-6 text-xs font-black tracking-wider uppercase text-white/80">
+          <button onClick={() => onNavigate('farm')} className="hover:text-white transition-colors">
+            FARM
+          </button>
+          <button onClick={() => onNavigate('marketplace')} className="hover:text-white transition-colors">
+            MARKETPLACE
+          </button>
+          <button onClick={() => onNavigate('network')} className="hover:text-white transition-colors">
+            NETWORK
+          </button>
+          <button onClick={() => onNavigate('insights')} className="hover:text-white transition-colors">
+            INSIGHTS
+          </button>
           <button onClick={() => onNavigate('scan')} className="hover:text-white transition-colors">
             SCAN
           </button>

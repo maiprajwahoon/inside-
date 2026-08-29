@@ -1,6 +1,6 @@
 import React from 'react';
 import type { ActiveTab } from '../../lib/types';
-import { Camera, Upload, Search, Columns, User } from 'lucide-react';
+import { Camera, Upload, Search, Columns, User, Sprout, Store, Zap, BarChart3 } from 'lucide-react';
 import { useProfile } from '../../context/ProfileContext';
 import { BrandLogo } from '../common/BrandLogo';
 
@@ -14,6 +14,10 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, onNavigate }) => {
   const ruleCount = userProfile.allergies.length + userProfile.diets.length + userProfile.avoidIngredients.length;
 
   const navItems: { id: ActiveTab; label: string; icon: React.ReactNode }[] = [
+    { id: 'farm', label: 'FARM', icon: <Sprout className="h-3.5 w-3.5" /> },
+    { id: 'marketplace', label: 'MARKETPLACE', icon: <Store className="h-3.5 w-3.5" /> },
+    { id: 'network', label: 'NETWORK', icon: <Zap className="h-3.5 w-3.5" /> },
+    { id: 'insights', label: 'INSIGHTS', icon: <BarChart3 className="h-3.5 w-3.5" /> },
     { id: 'scan', label: 'SCAN', icon: <Camera className="h-3.5 w-3.5" /> },
     { id: 'upload', label: 'UPLOAD', icon: <Upload className="h-3.5 w-3.5" /> },
     { id: 'search', label: 'SEARCH', icon: <Search className="h-3.5 w-3.5" /> },

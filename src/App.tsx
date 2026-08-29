@@ -10,6 +10,10 @@ import { ScannerView } from './components/scanner/ScannerView';
 import { UploadView } from './components/upload/UploadView';
 import { AnalysisResultView } from './components/analysis/AnalysisResultView';
 import { CompareView } from './components/compare/CompareView';
+import { FarmView } from './components/farm/FarmView';
+import { MarketplaceView } from './components/marketplace/MarketplaceView';
+import { NetworkView } from './components/network/NetworkView';
+import { InsightsView } from './components/insights/InsightsView';
 import type { ActiveTab, Product } from './lib/types';
 
 const MainApp: React.FC = () => {
@@ -38,6 +42,14 @@ const MainApp: React.FC = () => {
         )}
 
         {activeTab === 'onboarding' && <OnboardingView onComplete={handleNavigate} />}
+
+        {activeTab === 'farm' && <FarmView onNavigateToNetwork={() => handleNavigate('network')} />}
+
+        {activeTab === 'marketplace' && <MarketplaceView />}
+
+        {activeTab === 'network' && <NetworkView />}
+
+        {activeTab === 'insights' && <InsightsView />}
 
         {activeTab === 'profile' && <ProfileView />}
 
